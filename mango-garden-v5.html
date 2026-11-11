@@ -1,0 +1,435 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>สวนมะม่วงมะปราง</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff3d0;--card:#fffdf5;--ink:#3b2a14;--mut:#8a7556;--pri:#e58a00;--grn:#4a9b3c;--line:#ecdcb4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d2316;--card:#2a311f;--ink:#f6ebcf;--mut:#b5a888;--line:#444c33}}
+:root[data-theme="dark"]{--bg:#1d2316;--card:#2a311f;--ink:#f6ebcf;--mut:#b5a888;--line:#444c33}
+html,body{height:100%;margin:0}body{background:var(--bg);color:var(--ink);font-family:Kanit,sans-serif;-webkit-tap-highlight-color:transparent}
+#app{height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto}
+header{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card);border-bottom:2px solid var(--line)}
+.av{position:relative;display:inline-block;font-size:30px;line-height:1;padding-top:12px}.av i{position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-size:19px;font-style:normal}
+.hd{flex:1;font-size:13px;line-height:1.3}.hd b{font-size:15px}.coin{font-weight:600;color:var(--pri);font-size:17px}
+main{flex:1;overflow-y:auto;padding:12px}
+nav{display:flex;background:var(--card);border-top:2px solid var(--line)}nav button{flex:1;border:0;background:none;padding:8px 0;font:inherit;font-size:11px;color:var(--mut)}nav button span{display:block;font-size:20px}nav button.on{color:var(--pri);font-weight:600}
+.card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:10px;padding:9px 14px;font:inherit;font-size:14px}.btn.g{background:var(--grn)}.btn.ghost{background:var(--line);color:var(--ink)}.btn:disabled{opacity:.5}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.sp{flex:1}.mut{color:var(--mut);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cell{aspect-ratio:1;border-radius:14px;background:#8b5a2b33;border:2px dashed #8b5a2b66;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;font-size:34px;user-select:none}
+.cell.rp{border-color:var(--pri);background:#ffc84a44;border-style:solid}.cell.lk{opacity:.6;font-size:22px}
+.cell .f{position:absolute;top:2px;right:6px;font-size:20px}.cell .w{position:absolute;top:2px;left:6px;font-size:16px}
+.cell .bar{position:absolute;bottom:6px;left:10%;width:80%;height:5px;background:#0003;border-radius:3px;overflow:hidden}.cell .bar u{display:block;height:100%;background:var(--grn);width:0}
+.night #farm{filter:brightness(.7)}
+.chip{padding:6px 10px;border-radius:20px;border:2px solid var(--line);background:var(--card);font:inherit;font-size:13px;color:var(--ink)}.chip.on{border-color:var(--pri);background:#ffc84a55}
+.up{color:#2e9e4f}.dn{color:#d6453d}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 64px);transform:translateX(-50%);background:#3b2a14ee;color:#fff;padding:8px 14px;border-radius:20px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;z-index:9;max-width:90%;text-align:center}
+#m,#cr{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:5;padding:16px}
+.box{background:var(--card);border-radius:18px;padding:16px;width:100%;max-width:380px;text-align:center}
+.fb{position:relative;height:26px;background:#3a8fb744;border-radius:13px;margin:12px 0}#fz{position:absolute;top:0;height:100%;width:30%;background:#4a9b3c;border-radius:13px;opacity:.8}#fk{position:absolute;top:-3px;width:4%;height:32px;background:#d6453d;border-radius:4px}
+#pl{position:relative;height:300px;background:linear-gradient(#bfe6ff,#d6f2c0);border-radius:12px;overflow:hidden;margin:8px 0;touch-action:manipulation}
+.fl{position:absolute;top:-40px;font-size:34px;animation:fall 2.2s linear forwards;user-select:none}@keyframes fall{to{top:310px}}
+input.t{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2px solid var(--line);font:inherit;font-size:16px;background:var(--bg);color:var(--ink)}
+.pk{display:flex;gap:8px;justify-content:center;margin:8px 0}.pk button{font-size:28px;padding:4px 8px;border-radius:12px;border:3px solid transparent;background:var(--bg)}.pk button.on{border-color:var(--pri)}
+.dp{display:grid;grid-template-columns:repeat(3,50px);grid-template-rows:repeat(3,50px);gap:3px}.dp button{border:0;border-radius:12px;background:var(--line);color:var(--ink);font-size:20px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+</style></head><body>
+<div id="app"><header id="hd"></header><main id="mn"></main><nav id="nv"></nav></div>
+<div id="toast"></div><div id="m"></div><div id="cr"></div>
+<script>
+const $=s=>document.querySelector(s);const DL=300;/* 1 วัน = 300 วินาที = 5 นาที */
+const gtime=()=>{const h=(S.t%DL)/DL,m=Math.floor(((h<.7?6+h/.7*14:20+(h-.7)/.3*10)%24)*60/5)*5;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0")};
+const FR={mango:{n:"มะม่วง",e:"🥭",seed:30,grow:50,base:12,y:[3,5]},marian:{n:"มะปราง",e:"🍑",seed:20,grow:35,base:9,y:[3,6]}};
+const OT={fish:{n:"ปลา",e:"🐟",base:16},egg:{n:"ไข่ไก่",e:"🥚",base:7}};
+const ALL={...FR,...OT};
+const PETS={dog:{n:"หมา",e:"🐶",c:100,d:"ขายของได้ราคา +10%"},cat:{n:"แมว",e:"🐱",c:80,d:"ไล่หนอนศัตรูพืชอัตโนมัติ"},chick:{n:"ไก่",e:"🐔",c:60,d:"ออกไข่ให้ทุก 30 วินาที"}};
+const SK=["🧑🏻‍🌾","🧑🏼‍🌾","🧑🏽‍🌾","🧑🏾‍🌾","🧑🏿‍🌾"],HT=["","👒","🧢","🎩"];
+const QS=[{k:"h",n:"เก็บผลไม้ 8 ผล",g:8,r:60},{k:"f",n:"ตกปลา 3 ตัว",g:3,r:50},{k:"g",n:"เล่นมินิเกมเก็บมะม่วง 1 รอบ",g:1,r:40},{k:"s",n:"ขายของ 15 ชิ้น",g:15,r:70}];
+const NEWS=[["🎉 เทศกาลมะม่วงน้ำปลาหวาน! ราคามะม่วงพุ่ง","mango",1.6],["🌧️ ฝนตกหนัก มะปรางขาดตลาด ราคาขึ้น","marian",1.6],["📉 ผลผลิตล้นตลาด ราคามะม่วงตก","mango",.65],["📉 พ่อค้ากดราคามะปราง","marian",.65],["🍳 ร้านอาหารแย่งซื้อปลา ราคาพุ่ง","fish",1.5],["🥚 ไข่ล้นตลาด ราคาลด","egg",.7]];
+const fresh=()=>({name:"",skin:0,hat:1,coins:100,xp:0,t:0,day:1,seed:"mango",pet:null,hap:80,inv:{mango:0,marian:0,fish:0,egg:0},P:Object.fromEntries(Object.entries(ALL).map(([k,v])=>[k,v.base])),H:Object.fromEntries(Object.keys(ALL).map(k=>[k,[ALL[k].base]])),news:"ตลาดเปิดแล้ว ราคาจะขึ้นลงตลอดเวลา",plots:Array.from({length:9},(_,i)=>({u:i<4,k:null,p:0,w:0,bug:0})),q:{h:0,f:0,g:0,s:0,sf:0,pl:0,w:0,b:0,rare:0},qs:{},met:{},fset:{},fauto:0});
+let S=null,tab="farm";
+try{S=JSON.parse(localStorage.getItem("mangoSave3"))}catch(e){}
+const save=()=>{try{localStorage.setItem("mangoSave3",JSON.stringify(S))}catch(e){}};
+const lvl=()=>1+Math.floor(Math.sqrt(S.xp/25));
+const av=()=>`<span class="av"><i>${HT[S.hat]}</i>${SK[S.skin]}</span>`;
+let tt;function toast(t){const e=$("#toast");e.textContent=t;e.style.opacity=1;clearTimeout(tt);tt=setTimeout(()=>e.style.opacity=0,2200)}
+/* audio */
+let AC,mg,mus=1,sfxOn=1,nx=0,step=0,mi=2;const SC=[0,2,4,7,9,12,14,16];
+function aud(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();mg.gain.value=.14;mg.connect(AC.destination)}catch(e){return}}if(AC.state=="suspended")AC.resume()}
+function note(f,t,d,ty="triangle",v=1){if(!AC)return;const o=AC.createOscillator(),g=AC.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.05)}
+function sfx(k){if(!AC||!sfxOn)return;const t=AC.currentTime,f={coin:[880,1320],ok:[523,659,784],bad:[200,150],tap:[600]}[k]||[600];f.forEach((x,i)=>note(x,t+i*.08,.18,"square",.5))}
+setInterval(()=>{if(!AC||!mus||!S)return;if(nx<AC.currentTime)nx=AC.currentTime+.05;while(nx<AC.currentTime+.6){mi=Math.max(0,Math.min(7,mi+[-2,-1,-1,0,1,1,2][Math.random()*7|0]));if(Math.random()>.15)note(262*2**(SC[mi]/12),nx,.55);if(step%4==0)note(131*2**(SC[[0,2,3,1][(step>>2)%4]]/12),nx,1.5,"sine",.9);nx+=.38;step++}},200);
+/* ui */
+function hdr(){const h=((S.t%DL)/DL),night=h>.7;document.body.classList.toggle("night",night);$("#hd").innerHTML=`${av()}<div class="hd"><b>${S.name}</b><br>Lv.${lvl()} · วันที่ ${S.day} ${night?"🌙":"☀️"} <b>🕒 ${gtime()}</b></div><div class="coin">🪙 ${Math.floor(S.coins)}</div>`}
+function nav(){$("#nv").innerHTML=[["farm","🌳","ฟาร์ม"],["mkt","🏪","ตลาด"],["pet","🐾","สัตว์เลี้ยง"],["fun","🎮","กิจกรรม"],["q","📜","ภารกิจ"],["set","⚙️","ตั้งค่า"]].map(([k,e,n])=>`<button data-t="${k}" class="${tab==k?"on":""}"><span>${e}</span>${n}</button>`).join("")}
+function go(t){tab=t;nav();render()}
+function render(){const m=$("#mn");({farm:rFarm,mkt:rMkt,pet:rPet,fun:rFun,q:rQ,set:rSet})[tab](m);updFarm();}
+/* farm */
+function rFarm(m){m.innerHTML=`<div class="row" style="margin-bottom:8px"><span class="mut">ปลูกอะไรดี:</span>${Object.entries(FR).map(([k,v])=>`<button class="chip ${S.seed==k?"on":""}" data-seed="${k}">${v.e} ${v.n} 🪙${v.seed}</button>`).join("")}</div><div class="grid" id="farm">${S.plots.map((p,i)=>`<div class="cell" data-p="${i}"><span class="w"></span><span class="f"></span><b class="t" style="font-weight:400"></b><s class="bar" style="text-decoration:none"><u></u></s></div>`).join("")}</div><p class="mut">แตะช่องว่างเพื่อปลูก · แตะต้นไม้เพื่อรดน้ำ (ต้นไม้โตเมื่อมีน้ำเท่านั้น) · แตะ 🐛 เพื่อจับหนอน · แตะผลสุกเพื่อเก็บเกี่ยว</p>`}
+function updFarm(){if(tab!="farm")return;const cs=document.querySelectorAll(".cell");if(!cs.length)return;S.plots.forEach((p,i)=>{const c=cs[i];c.className="cell";const t=c.querySelector(".t"),f=c.querySelector(".f"),w=c.querySelector(".w"),b=c.querySelector("u");f.textContent=w.textContent="";b.style.width=0;if(!p.u){c.classList.add("lk");t.textContent="🔒 🪙"+40*(S.plots.filter(x=>x.u).length-3);return}if(!p.k){t.textContent="➕";t.style.fontSize="22px";return}t.style.fontSize="";const F=FR[p.k],r=p.p/F.grow;t.textContent=r<.3?"🌱":r<.7?"🌿":"🌳";b.style.width=Math.min(100,r*100)+"%";if(r>=1){c.classList.add("rp");f.textContent=F.e}else w.textContent=p.bug?"🐛":p.w>0?"💧":"⚠️"})}
+function plot(i){const p=S.plots[i];aud();if(!p.u){const n=S.plots.filter(x=>x.u).length,c=40*(n-3);if(S.coins<c)return toast("เงินไม่พอ ต้องใช้ 🪙"+c);S.coins-=c;p.u=1;sfx("ok");return upd()}
+if(!p.k){const F=FR[S.seed];if(S.coins<F.seed)return toast("เงินไม่พอซื้อเมล็ด");S.coins-=F.seed;p.k=S.seed;p.p=0;p.w=25;sfx("tap");return upd()}
+if(p.bug){p.bug=0;S.xp+=1;sfx("ok");return upd()}
+const F=FR[p.k];if(p.p>=F.grow){const n=F.y[0]+(Math.random()*(F.y[1]-F.y[0]+1)|0);S.inv[p.k]+=n;S.q.h+=n;S.xp+=n*3;p.p=Math.floor(F.grow*.3);p.w=0;sfx("coin");toast(`เก็บได้ ${F.e} ${n} ผล!`);return upd()}
+p.w=25;sfx("tap");toast("💧 รดน้ำแล้ว");upd()}
+function upd(){hdr();if(tab=="farm")updFarm();else render();save()}
+/* market */
+function spark(h){const mx=Math.max(...h),mn=Math.min(...h),r=mx-mn||1;return `<svg width="90" height="30" viewBox="0 0 90 30"><polyline fill="none" stroke="var(--pri)" stroke-width="2" points="${h.map((v,i)=>`${i*90/Math.max(1,h.length-1)},${28-(v-mn)/r*26}`).join(" ")}"/></svg>`}
+const bonus=()=>(S.pet=="dog"&&S.hap>30?1.1:1)*(S.mae?1.05:1)*(1+.04*(S.up?S.up.t:0));
+function rMkt(m){m.innerHTML=`<div class="card" style="background:#ffc84a55">📰 ${S.news}</div>`+Object.entries(ALL).map(([k,v])=>{const h=S.H[k],p=S.P[k],pr=h.length>1?h[h.length-2]:p,up=p>=pr;return `<div class="card row"><div style="font-size:30px">${v.e}</div><div class="sp"><b>${v.n}</b> <span class="mut">มี ${S.inv[k]}</span><br><span style="font-size:20px;font-weight:600">🪙 ${(p*bonus()).toFixed(1)}</span> <span class="${up?"up":"dn"}">${up?"▲":"▼"}</span></div>${spark(h)}${k=="fish"?`<div style="width:100%" class="mut">ตัวคูณราคาปลา ×${(p/v.base).toFixed(2)} · ขายแยกชนิดด้านล่าง ⬇️</div>`:`<div style="width:100%" class="row"><button class="btn ghost" data-s="${k}" data-n="1">ขาย 1</button><button class="btn g" data-s="${k}" data-n="all">ขายทั้งหมด</button></div>`}</div>${k=="fish"?fishPanel():""}`}).join("")+`<p class="mut">ราคาแกว่งทุก 8 วินาที เก็บของไว้รอราคาสูงแล้วค่อยขายได้</p>`}
+function sell(k,n){const c=S.inv[k];n=n=="all"?c:Math.min(1,c);if(!n)return toast("ไม่มีของให้ขาย");S.inv[k]-=n;S.coins+=Math.round(n*S.P[k]*bonus());S.q.s+=n;S.xp+=n;sfx("coin");upd()}
+/* pet */
+function rPet(m){if(!S.pet){m.innerHTML=`<p>รับสัตว์เลี้ยงมาช่วยงานในสวน!</p>`+Object.entries(PETS).map(([k,v])=>`<div class="card row"><span style="font-size:36px">${v.e}</span><div class="sp"><b>${v.n}</b><br><span class="mut">${v.d}</span></div><button class="btn" data-adopt="${k}">🪙${v.c}</button></div>`).join("");return}
+const v=PETS[S.pet];m.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:70px">${v.e}</div><b>${v.n}ของ ${S.name}</b><p class="mut">${v.d} (ต้องอารมณ์ดีเกิน 30)</p><div style="height:10px;background:var(--line);border-radius:5px;overflow:hidden"><div style="height:100%;width:${S.hap}%;background:#e5557a"></div></div><p>❤️ ความสุข ${Math.round(S.hap)}%</p><div class="row" style="justify-content:center"><button class="btn" data-pa="feed">🍖 ให้อาหาร</button><button class="btn g" data-pa="play">🎾 เล่นด้วย</button></div><p class="mut">ให้อาหารใช้ปลา 1 ตัว (ถ้าไม่มีจ่าย 🪙5)</p></div>`}
+function petAct(a){if(a=="feed"){if(S.inv.fish>0)S.inv.fish--;else if(S.coins>=5)S.coins-=5;else return toast("ไม่มีปลาและเงินไม่พอ");S.hap=Math.min(100,S.hap+35)}else{S.hap=Math.min(100,S.hap+8);S.xp+=1}sfx("ok");upd()}
+/* fun & quests */
+function rFun(m){m.innerHTML=`<div class="card row"><span style="font-size:40px">🎣</span><div class="sp"><b>ตกปลา</b><br><span class="mut">จับจังหวะกดดึงให้ตรงโซนเขียว</span></div><button class="btn" data-g="fish">เล่น</button></div><div class="card row"><span style="font-size:40px">🧺</span><div class="sp"><b>เก็บมะม่วงตกจากฟ้า</b><br><span class="mut">20 วินาที แตะผลไม้ ระวังหนอน!</span></div><button class="btn" data-g="catch">เล่น</button></div>`}
+function rQ(m){m.innerHTML=`<p class="mut">ภารกิจรีเซ็ตทุกวัน (1 วันในเกม = 2 นาที)</p>`+QS.map((q,i)=>{const v=Math.min(q.g,S.q[q.k]),ok=v>=q.g;return `<div class="card row"><div class="sp"><b>${q.n}</b><br><span class="mut">${v}/${q.g} · รางวัล 🪙${q.r}</span></div><button class="btn g" data-q="${i}" ${!ok||S.q.c[i]?"disabled":""}>${S.q.c[i]?"รับแล้ว":"รับ"}</button></div>`}).join("")}
+/* modal */
+let mc=null;function openM(h,c){aud();mc=c;const m=$("#m");m.innerHTML=`<div class="box">${h}<br><button class="btn ghost" id="mx" style="margin-top:10px">ปิด</button></div>`;m.style.display="flex";$("#mx").onclick=closeM}
+function closeM(){if(mc)mc();mc=null;$("#m").style.display="none";upd()}
+function fishGame(){let st=0,raf,to,z=0,t0=0,pos=0;openM(`<h3>🎣 ตกปลา</h3><p id="fm">กดปล่อยเบ็ด แล้วรอปลากินเหยื่อ</p><div class="fb"><div id="fz"></div><div id="fk" style="left:0"></div></div><button class="btn" id="fgo">ปล่อยเบ็ด</button>`,()=>{cancelAnimationFrame(raf);clearTimeout(to)});
+const fm=$("#fm"),fz=$("#fz"),fk=$("#fk"),b=$("#fgo");const loop=t=>{pos=(Math.sin((t-t0)/230)+1)/2*96;fk.style.left=pos+"%";raf=requestAnimationFrame(loop)};
+b.onclick=()=>{if(st==0){st=1;fm.textContent="รอปลา... 🌊";b.disabled=true;to=setTimeout(()=>{st=2;z=5+Math.random()*60;fz.style.left=z+"%";fm.textContent="ปลากินเบ็ดแล้ว! กดตอนขีดแดงอยู่ในโซนเขียว";b.disabled=false;b.textContent="ดึง!";t0=performance.now();raf=requestAnimationFrame(loop)},900+Math.random()*2200)}else if(st==2){cancelAnimationFrame(raf);st=0;b.textContent="ปล่อยเบ็ดอีกครั้ง";if(pos>=z-2&&pos<=z+30){if(Math.random()<.12){S.coins+=30;fm.textContent="🐠 ได้ปลาสวยงาม ขายได้ 🪙30!"}else{S.inv.fish++;fm.textContent="🐟 ได้ปลา 1 ตัว!"}S.q.f++;S.xp+=5;sfx("ok")}else{fm.textContent="ปลาหลุด! ลองใหม่";sfx("bad")}hdr();save()}}}
+function catchGame(){let sc=0,tl=20,iv,sp;openM(`<h3>🧺 เก็บมะม่วง</h3><div class="row"><b id="cs">0 แต้ม</b><span class="sp"></span><b id="ct">20</b>s</div><div id="pl"></div><p class="mut">🥭🍑 +1 · ⭐ +3 · 🐛 -2</p>`,()=>{clearInterval(iv);clearInterval(sp)});
+const pl=$("#pl");sp=setInterval(()=>{const r=Math.random(),e=r<.08?"⭐":r<.28?"🐛":r<.65?"🥭":"🍑",d=document.createElement("div");d.className="fl";d.textContent=e;d.style.left=Math.random()*85+"%";d.style.animationDuration=(1.6+Math.random()*1.2)+"s";d.onpointerdown=()=>{sc+=e=="⭐"?3:e=="🐛"?-2:1;sfx(e=="🐛"?"bad":"tap");$("#cs").textContent=sc+" แต้ม";d.remove()};d.onanimationend=()=>d.remove();pl.appendChild(d)},420);
+iv=setInterval(()=>{tl--;$("#ct").textContent=tl;if(tl<=0){clearInterval(iv);clearInterval(sp);const r=Math.max(0,sc)*3;S.coins+=r;S.q.g++;S.xp+=Math.max(0,sc);pl.innerHTML=`<div style="padding-top:110px;font-size:20px">จบเกม! ได้ 🪙${r}</div>`;sfx("coin");hdr();save()}},1000)}
+/* 2D world */
+const WW=14,WH=10,T=32,SOL=new Set();let cv,cx,lt=0;const pl={x:7,y:7.5,f:1,m:0},pt={x:6,y:7.8},keys={};
+for(let x=9;x<=12;x++)for(let y=6;y<=9;y++)SOL.add(x+","+y);[[10,1],[12,1],[10,4],[1,8]].forEach(([x,y])=>SOL.add(x+","+y));
+const OB=[{x:10.5,y:1.5,e:"🏪",l:"ตลาด",f:()=>go("mkt")},{x:12.5,y:1.5,e:"📜",l:"สมุดภารกิจ",f:()=>go("q")},{x:10.5,y:4.5,e:"🌳",l:"เก็บมะม่วง (มินิเกม)",f:()=>catchGame()},{x:1.5,y:8.5,e:"🏠",l:"สัตว์เลี้ยง",f:()=>go("pet")},{x:8.6,y:7.5,l:"ตกปลา",f:()=>fishGame()}];
+const FL=[[7,1],[8,3],[6,8],[4,9],[13,5],[0,5],[7,5],[12,4]];
+function updFarm(){}
+function rFarm(m){m.innerHTML=`<canvas id="wc" width="896" height="640" style="width:100%;border-radius:14px;display:block"></canvas><div class="row" style="margin-top:8px;justify-content:space-between;padding:0 6px"><div class="dp"><span></span><button data-d="u">▲</button><span></span><button data-d="l">◀</button><span></span><button data-d="r">▶</button><span></span><button data-d="d">▼</button><span></span></div><div style="display:flex;flex-direction:column;gap:6px">${Object.entries(FR).map(([k,v])=>`<button class="chip ${S.seed==k?"on":""}" data-seed="${k}">${v.e} ${v.n}</button>`).join("")}</div><button class="btn" data-a="1" style="width:90px;height:90px;border-radius:50%;font-size:18px">แตะ</button></div><p class="mut">เดินด้วยปุ่มลูกศร (หรือ WASD) เข้าใกล้ต้นไม้/สิ่งของ แล้วกดปุ่ม แตะ (หรือ Space)</p>`;cv=$("#wc");cx=cv.getContext("2d")}
+function objs(){const a=OB.slice();S.plots.forEach((p,i)=>{const F=p.k&&FR[p.k];a.push({x:1.5+(i%3)*2,y:1.5+(i/3|0)*2,l:!p.u?"ปลดล็อก 🪙"+40*(S.plots.filter(x=>x.u).length-3):!p.k?"ปลูก"+FR[S.seed].n:p.bug?"จับหนอน":p.p>=F.grow?"เก็บเกี่ยว":"รดน้ำ",f:()=>plot(i)})});Object.entries(NPCS).forEach(([id,n])=>{const st=nst(id);a.push({x:n.x,y:n.y-.3,l:"คุยกับ "+n.n+(st==1?" ❗":st==3?" ❓":""),f:()=>talk(id)})});return a}
+function near(){let b=null,d=1.4;for(const o of objs()){const k=Math.hypot(o.x-pl.x,o.y-pl.y);if(k<d){d=k;b=o}}return b}
+function act(){if($("#cs").style.display=="block"||$("#fd").style.opacity==1)return;aud();const o=near();if(o)o.f();else toast("เดินเข้าใกล้สิ่งของก่อนนะ")}
+function mv(dt){const dx=(keys.r?1:0)-(keys.l?1:0),dy=(keys.d?1:0)-(keys.u?1:0);if(dx||dy){const s=3.4*dt/Math.hypot(dx,dy);if(dx)pl.f=dx;const ok=(x,y)=>x>.3&&y>.3&&x<WW-.3&&y<WH-.3&&!SOL.has(Math.floor(x)+","+Math.floor(y));if(ok(pl.x+dx*s,pl.y))pl.x+=dx*s;if(ok(pl.x,pl.y+dy*s))pl.y+=dy*s;pl.m=1}else pl.m=0;petWalk(dt)}
+function draw(){const c=cx;c.setTransform(2,0,0,2,0,0);c.fillStyle="#7bc96f";c.fillRect(0,0,448,320);c.fillStyle="#6fbd63";for(let i=0;i<70;i++)c.fillRect(i*97%448,i*53%320,3,3);
+c.textAlign="center";c.textBaseline="middle";const em=(e,x,y,s)=>{c.font=s+"px serif";c.fillText(e,x,y)};
+c.fillStyle="#e6d29a";c.beginPath();c.ellipse(11*T,8*T,2.15*T,2.15*T,0,0,7);c.fill();c.fillStyle="#4aa8d8";c.beginPath();c.ellipse(11*T,8*T,1.95*T,1.95*T,0,0,7);c.fill();em("🐟",11*T-10,8*T+6,20);em("🐟",11*T+22,8*T-14,16);
+FL.forEach(([x,y])=>em("🌼",x*T+16,y*T+16,14));
+S.plots.forEach((p,i)=>{const x=(1.5+(i%3)*2)*T,y=(1.5+(i/3|0)*2)*T;c.fillStyle=p.u?"#8b5a2b":"#5a5a5a88";c.fillRect(x-22,y-22,44,44);if(!p.u){em("🔒",x,y,22);return}if(!p.k)return;const F=FR[p.k],r=Math.min(1,p.p/F.grow);em(r<.3?"🌱":r<.7?"🌿":"🌳",x,y-2,30);if(r>=1)em(F.e,x+14,y-14,18);else em(p.bug?"🐛":p.w>0?"💧":"⚠️",x-14,y-14,14);c.fillStyle="#0006";c.fillRect(x-18,y+15,36,4);c.fillStyle="#4a9b3c";c.fillRect(x-18,y+15,36*r,4)});
+OB.forEach(o=>{if(o.e)em(o.e,o.x*T,o.y*T,38)});
+if(S.pet){c.fillStyle="#0003";c.beginPath();c.ellipse(pt.x*T,pt.y*T+10,10,4,0,0,7);c.fill();em(PETS[S.pet].e,pt.x*T,pt.y*T+(pl.m?Math.sin(performance.now()/80)*2:0),24)}
+c.fillStyle="#0003";c.beginPath();c.ellipse(pl.x*T,pl.y*T+13,12,5,0,0,7);c.fill();c.save();c.translate(pl.x*T,pl.y*T+(pl.m?Math.sin(performance.now()/90)*2:0));if(pl.f<0)c.scale(-1,1);em(SK[S.skin],0,0,30);if(HT[S.hat])em(HT[S.hat],0,-17,18);c.restore();
+if(S.t%DL/DL>.7){c.fillStyle="#0a1840";c.globalAlpha=.4;c.fillRect(0,0,448,320);c.globalAlpha=1}
+const o=near();if(o){c.strokeStyle="#fff";c.lineWidth=2;c.beginPath();c.arc(o.x*T,o.y*T,20,0,7);c.stroke();c.font="13px Kanit,sans-serif";const w=c.measureText(o.l).width+14,ly=Math.max(12,o.y*T-34),lx=Math.min(448-w/2,Math.max(w/2,o.x*T));c.fillStyle="#000b";c.fillRect(lx-w/2,ly-10,w,20);c.fillStyle="#fff";c.fillText(o.l,lx,ly)}}
+function frame(t){const dt=Math.min(.05,(t-lt)/1000||0);lt=t;if(cv&&document.body.contains(cv)&&S&&S.name&&$("#cr").style.display!="flex"){if($("#m").style.display!="flex")mv(dt);draw()}requestAnimationFrame(frame)}
+document.addEventListener("pointerdown",e=>{const b=e.target.closest("[data-d]");if(b){keys[b.dataset.d]=1;e.preventDefault()}});
+["pointerup","pointercancel"].forEach(v=>document.addEventListener(v,()=>{keys.u=keys.d=keys.l=keys.r=0}));
+document.addEventListener("contextmenu",e=>{if(e.target.closest(".dp"))e.preventDefault()});
+document.addEventListener("click",e=>{if(e.target.closest("[data-a]"))act()});
+const KM={ArrowUp:"u",w:"u",ArrowDown:"d",s:"d",ArrowLeft:"l",a:"l",ArrowRight:"r",d:"r"};
+window.addEventListener("keydown",e=>{if(KM[e.key]){keys[KM[e.key]]=1;e.preventDefault()}else if(e.key==" "||e.key=="Enter"||e.key=="e"){if(cv&&document.body.contains(cv)&&$("#m").style.display!="flex"){act();e.preventDefault()}}});
+window.addEventListener("keyup",e=>{if(KM[e.key])keys[KM[e.key]]=0});
+/* pixel art */
+document.head.insertAdjacentHTML("beforeend","<style>#wc{image-rendering:pixelated}</style>");
+for(let x=0;x<=2;x++)for(let y=8;y<=9;y++)SOL.add(x+","+y);
+const SKC=["#ffdcb8","#f5c79a","#d9a066","#a8703c","#6b4423"];
+const PL=["...hhhh...","..hhhhhh..","..hssssh..","..sesses..","..ssssss..","...vvvv...",".wvvwwvvw.",".svvwwvvs.","..vvvvvv..","..pppppp..","..pp..pp..","..pp..pp..","..bb..bb.."];
+const CH=[".r.....",".wwww..","wwwwwwy","wwwwkw.",".wwww..","..y.y.."],PG=["..ppppp..","ppppppppp","pppppppkn","ppppppppn",".pp...pp.",".dd...dd."],SH=[".wwwwww.","wwwwwwww","wwwwwwdd","wwwwwwdk",".wwwwww.","..d..d.."],PM=["e..e....","eeeeee..","eeeeeeek","eeeeeeen","eeeeeee.","e.e.e.e."];
+const PC={w:"#f6f1e4",r:"#d6453d",y:"#f0a020",k:"#2a1a1a"},PP={p:"#f3a6b0",n:"#e07a8a",k:"#2a1a1a",d:"#c0707e"},PS={w:"#f1e6cf",d:"#5a4a42",k:"#2a1a1a"};
+const AN=[["chick",4,8],["chick",7,9],["pig",5,7.5],["sheep",6.5,8.5],["pig",8,7]].map(([k,x,y])=>({k,x,y,f:1,nt:0,o:Math.random()*6000}));
+const AM={chick:[CH,PC],pig:[PG,PP],sheep:[SH,PS]};
+let GB=null,aT=0;
+const blob=(c,x,y,r,col)=>{c.fillStyle=col;for(let j=-r;j<=r;j+=2){const w=Math.sqrt(r*r-j*j);c.fillRect(Math.round(x-w),Math.round(y+j),Math.round(w*2),2)}};
+function spr(m,pal,x,y,s,fl){const w=m[0].length;m.forEach((r,j)=>{for(let i=0;i<w;i++){const col=pal[r[fl?w-1-i:i]];if(col){cx.fillStyle=col;cx.fillRect(Math.round(x+i*s),Math.round(y+j*s),s,s)}}})}
+function hb(x,y){cx.fillStyle="#fff";cx.fillRect(x-8,y-14,16,12);cx.fillRect(x-2,y-2,4,3);spr(["a.a","aaa",".a."],{a:"#e0405a"},x-5,y-11,3)}
+function bgc(){const g=document.createElement("canvas");g.width=448;g.height=320;const c=g.getContext("2d");c.fillStyle="#86633f";c.fillRect(0,0,448,320);let s=7;const R=()=>(s=s*16807%2147483647)/2147483647;for(let i=0;i<300;i++){const x=R()*440|0,y=R()*316|0;c.fillStyle="#9a7650";c.fillRect(x,y,6,4);c.fillStyle="#a88560";c.fillRect(x+1,y,3,1);c.fillStyle="#6f5133";c.fillRect(x+1,y+4,5,1)}
+blob(c,352,256,92,"#6ea84c");blob(c,352,256,86,"#7cbc58");blob(c,352,256,66,"#2a8f98");blob(c,352,256,60,"#38b0b0");c.fillStyle="#8fe0e0";[[330,236],[360,270],[376,244],[338,282]].forEach(([x,y])=>c.fillRect(x,y,10,2));return g}
+function draw(){const c=cx,now=performance.now(),dt=Math.min(.05,(now-aT)/1000||0);aT=now;c.setTransform(2,0,0,2,0,0);c.imageSmoothingEnabled=false;GB=GB||bgc();c.drawImage(GB,0,0);c.textAlign="center";c.textBaseline="middle";
+c.fillStyle="#4a9a3a";FL.forEach(([x,y])=>{x=x*T+8;y=y*T+8;c.fillRect(x,y+4,2,8);c.fillRect(x+4,y,2,12);c.fillRect(x+8,y+4,2,8);c.fillStyle="#e8f0d0";c.fillRect(x+4,y-2,2,3);c.fillStyle="#4a9a3a"});
+S.plots.forEach((p,i)=>{const x=(1.5+(i%3)*2)*T,y=(1.5+(i/3|0)*2)*T,wet=p.w>0;c.fillStyle=p.u?(wet?"#5b3a1d":"#8a5f34"):"#6a5a48";c.fillRect(x-22,y-22,44,44);c.fillStyle=p.u?(wet?"#3d2712":"#6b4626"):"#5a4a3a";for(let k=0;k<4;k++)c.fillRect(x-22,y-19+k*11,44,3);
+if(!p.u){c.fillStyle="#bbb";c.fillRect(x-7,y-3,14,11);c.fillStyle="#888";c.fillRect(x-4,y-10,2,8);c.fillRect(x+2,y-10,2,8);c.fillRect(x-4,y-10,8,2);return}
+if(!p.k)return;const F=FR[p.k],r=Math.min(1,p.p/F.grow);
+if(r<.3){c.fillStyle="#58b04a";c.fillRect(x-1,y-4,2,8);c.fillRect(x-6,y-6,5,3);c.fillRect(x+1,y-8,5,3)}
+else if(r<.7){c.fillStyle="#7a4a26";c.fillRect(x-1,y-2,3,10);blob(c,x,y-6,9,"#4aa04a");blob(c,x-2,y-8,4,"#66bf55")}
+else{c.fillStyle="#7a4a26";c.fillRect(x-2,y-4,5,14);blob(c,x,y-12,13,"#3f8f3a");blob(c,x-4,y-15,6,"#58b04a");if(r>=1){c.fillStyle=p.k=="mango"?"#f5b82e":"#f28a1e";[[-8,-10],[4,-16],[7,-6],[-2,-4]].forEach(([a,b])=>c.fillRect(x+a,y+b,5,5))}}
+if(r<1){if(p.bug){c.fillStyle="#222";c.fillRect(x+8,y-19,6,4);c.fillStyle="#d6453d";c.fillRect(x+9,y-20,4,2)}else if(wet){c.fillStyle="#4aa8ff";c.fillRect(x-19,y-19,3,5);c.fillRect(x-20,y-16,5,3)}else{c.fillStyle="#d6453d";c.fillRect(x-19,y-20,3,7);c.fillRect(x-19,y-11,3,3)}}
+c.fillStyle="#0007";c.fillRect(x-18,y+15,36,4);c.fillStyle="#6fcf4a";c.fillRect(x-18,y+15,36*r,4)});
+/* barn */
+const bx=4,by=232;for(let i=0;i<8;i++){c.fillStyle=i%2?"#4a6a9a":"#5a7aaa";c.fillRect(bx+(7-i)*5,by+i*4,88-(7-i)*10,4)}c.fillStyle="#a8382c";c.fillRect(bx+4,by+32,80,38);c.fillStyle="#e8c8a0";c.fillRect(bx+4,by+32,80,3);c.fillRect(bx+4,by+32,3,38);c.fillRect(bx+81,by+32,3,38);c.fillStyle="#7a2a20";c.fillRect(bx+30,by+38,28,32);c.fillStyle="#e8c8a0";c.fillRect(bx+43,by+38,2,32);c.fillRect(bx+30,by+52,28,2);c.fillStyle="#2a2a3a";c.fillRect(bx+10,by+42,12,10);c.fillRect(bx+66,by+42,12,10);
+/* stall, sign, tree */
+for(let i=0;i<6;i++){c.fillStyle=i%2?"#fff":"#d6453d";c.fillRect(312+i*8,36,8,10)}c.fillStyle="#b07a45";c.fillRect(312,46,48,18);c.fillStyle="#7a5028";c.fillRect(312,46,48,3);c.fillStyle="#f5b82e";c.fillRect(318,40+10,6,5);c.fillStyle="#f28a1e";c.fillRect(330,50,6,5);c.fillStyle="#58b04a";c.fillRect(342,50,6,5);
+c.fillStyle="#7a5028";c.fillRect(398,44,4,18);c.fillStyle="#c8934e";c.fillRect(386,28,28,18);c.fillStyle="#7a5028";c.fillRect(386,28,28,2);c.fillRect(386,44,28,2);c.fillRect(391,34,18,2);c.fillRect(391,39,12,2);
+c.fillStyle="#7a4a26";c.fillRect(332,138,9,36);blob(c,336,126,26,"#3f8f3a");blob(c,328,120,14,"#58b04a");c.fillStyle="#f5b82e";[[318,124],[340,116],[346,134],[328,136]].forEach(([x,y])=>c.fillRect(x,y,6,6));
+const now2=now;[].forEach(a=>{if(now>a.nt){a.nt=now+2500+Math.random()*4000;a.tx=3.5+Math.random()*5;a.ty=6.6+Math.random()*2.9}const dx=a.tx-a.x,dy=a.ty-a.y,d=Math.hypot(dx,dy);a.mv=d>.15&&(now+a.o)%6000>1500;if(a.mv){a.x+=dx/d*.5*dt;a.y+=dy/d*.5*dt;if(Math.abs(dx)>.05)a.f=dx>0?1:-1}});
+const L=[[pl.y,()=>{const px=pl.x*T,py=pl.y*T+(pl.m&&(now/110|0)%2?-1:0);c.fillStyle="#0003";c.fillRect(px-9,pl.y*T-2,18,4);spr(PL,{h:"#7a4a26",s:SKC[S.skin],e:"#2a1a10",v:"#6b4a2a",w:"#f1e6cf",p:"#3a3a4a",b:"#4a2a1a"},px-10,py-26,2);
+if(S.hat==1){c.fillStyle="#e8c46a";c.fillRect(px-13,py-26,26,3);c.fillStyle="#f0d080";c.fillRect(px-8,py-32,16,7)}else if(S.hat==2){c.fillStyle="#d6453d";c.fillRect(px-8,py-30,16,6);c.fillStyle="#a82f28";c.fillRect(px-9,py-25,18,2)}else if(S.hat==3){c.fillStyle="#222";c.fillRect(px-10,py-26,20,3);c.fillRect(px-6,py-38,12,12)}}]];
+if(S.pet){const pm={dog:[PM,{e:"#a0693a",k:"#2a1a1a",n:"#2a1a1a"}],cat:[PM,{e:"#e08a3a",k:"#2a1a1a",n:"#f0a0a0"}],chick:[CH,PC]}[S.pet];L.push([pt.y,()=>{const w=pm[0][0].length*2,h=pm[0].length*2,x=pt.x*T-w/2,y=pt.y*T-h;c.fillStyle="#0003";c.fillRect(x,pt.y*T-2,w,3);spr(pm[0],pm[1],x,y,2,pt.f<0);if(S.hun<25){c.font="14px serif";c.fillText("🍖",pt.x*T,y-4)}else if(S.hap>60)hb(pt.x*T,y-2);if(S.pn){c.font="11px Kanit,sans-serif";const w=c.measureText(S.pn).width+8;c.fillStyle="#000a";c.fillRect(pt.x*T-w/2,y-22,w,13);c.fillStyle="#fff";c.fillText(S.pn,pt.x*T,y-15)}}])}
+[].forEach(a=>L.push([a.y,()=>{const[m,pal]=AM[a.k],w=m[0].length*2,h=m.length*2,x=a.x*T-w/2,y=a.y*T-h-(a.mv&&(now/150|0)%2?1:0);c.fillStyle="#0003";c.fillRect(x,a.y*T-2,w,3);spr(m,pal,x,y,2,a.f<0);hb(a.x*T,y-2)}]));
+Object.entries(NPCS).forEach(([id,n])=>L.push([n.y,()=>drawNpc(id,n,now)]));L.sort((a,b)=>a[0]-b[0]).forEach(l=>l[1]());
+if(S.t%DL/DL>.7){c.fillStyle="#0a1840";c.globalAlpha=.4;c.fillRect(0,0,448,320);c.globalAlpha=1}
+const o=near();if(o){c.strokeStyle="#fff";c.lineWidth=2;c.strokeRect(o.x*T-23,o.y*T-23,46,46);c.font="13px Kanit,sans-serif";const w=c.measureText(o.l).width+14,ly=Math.max(12,o.y*T-34),lx=Math.min(448-w/2,Math.max(w/2,o.x*T));c.fillStyle="#000b";c.fillRect(lx-w/2,ly-10,w,20);c.fillStyle="#fff";c.fillText(o.l,lx,ly)}}
+/* v3: house, fish, bag, cutscenes, fx */
+document.head.insertAdjacentHTML("beforeend",`<style>#cs{position:fixed;inset:0;display:none;z-index:8}#cs .bar{position:absolute;left:0;right:0;background:#000;height:0;transition:height .5s}#cs.on .bar{height:11%}.bar.t{top:0}.bar.b{bottom:0}.dlg{position:absolute;left:12px;right:12px;bottom:13%;background:#000c;color:#fff;border-radius:14px;padding:12px;min-height:84px}.dlg p{margin:4px 0 14px}.dlg i{position:absolute;right:12px;bottom:6px;font-size:11px;opacity:.7;font-style:normal;animation:bl 1s infinite}@keyframes bl{50%{opacity:0}}#fd{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .9s;z-index:9;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;text-align:center}.pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}@keyframes pop{from{transform:scale(.2);opacity:0}}.sl{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.sl div{aspect-ratio:1;border:2px solid var(--line);border-radius:10px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:26px}.sl small{font-size:10px;color:var(--mut)}.hb{display:flex;gap:6px;justify-content:center;margin-top:8px}.hb button{width:48px;height:50px;border-radius:12px;border:3px solid var(--line);background:var(--card);font-size:24px;position:relative;line-height:1;transition:.15s}.hb button small{position:absolute;bottom:1px;right:3px;font-size:9px;color:var(--mut)}.hb button.on{border-color:var(--pri);background:#ffc84a55;transform:translateY(-4px)}.cw{overflow:hidden;border-radius:14px}.cw canvas{transition:transform 1.2s ease}.fw{position:relative;height:64px;border-radius:12px;background:linear-gradient(#bfe6ff 40%,#2a8f98 40%);overflow:hidden}.fw span{position:absolute;left:50%;top:30%;font-size:18px}.fw.w span{animation:bob 1s infinite alternate}.fw.bt span{animation:dip .2s infinite alternate}@keyframes bob{to{top:34%}}@keyframes dip{to{top:56%}}</style><div id="cs"></div><div id="fd"></div>`);
+["cs","fd"].forEach(id=>{const e=document.getElementById(id);if(e)document.body.appendChild(e)});
+for(let x=7;x<=8;x++)for(let y=1;y<=2;y++)SOL.add(x+","+y);
+OB.push({x:8,y:3.15,l:"บ้าน (นอนข้ามคืน)",f:()=>sleep()});
+OB[4].f=()=>S.tool==3?fishGame():toast("เลือกเบ็ดตกปลา 🎣 ในสล็อตก่อนนะ (กด 4)");
+const TN=["เมล็ดมะม่วง – แตะแปลงว่างเพื่อปลูก","เมล็ดมะปราง – แตะแปลงว่างเพื่อปลูก","บัวรดน้ำ – แตะต้นไม้เพื่อรดน้ำ","เบ็ดตกปลา – ไปริมบ่อแล้วแตะ","มือเปล่า ✋ – เก็บเกี่ยว จับหนอน และคุยกับคนได้"];
+function rFarm(m){m.innerHTML=`<div class="cw"><canvas id="wc" width="896" height="640" style="width:100%;display:block"></canvas></div><div class="hb">${[["🥭","🪙30"],["🍑","🪙20"],["🪣","3"],["🎣","4"],["✋","5"]].map(([e,p],i)=>`<button data-tool="${i}" class="${S.tool==i?"on":""}">${e}<small>${p}</small></button>`).join("")}<button data-bag="1">🎒</button></div><p class="mut" id="tl" style="text-align:center;margin:4px 0">${TN[S.tool]}</p><div class="row" style="justify-content:space-between;padding:0 10px"><div class="dp"><span></span><button data-d="u">▲</button><span></span><button data-d="l">◀</button><span></span><button data-d="r">▶</button><span></span><button data-d="d">▼</button><span></span></div><button class="btn" data-a="1" style="width:96px;height:96px;border-radius:50%;font-size:18px">แตะ</button></div>`;cv=$("#wc");cx=cv.getContext("2d")}
+function selTool(i){S.tool=i;sfx("tap");document.querySelectorAll("[data-tool]").forEach(b=>b.classList.toggle("on",+b.dataset.tool==i));const t=$("#tl");if(t)t.textContent=TN[i]}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-tool]");if(b)selTool(+b.dataset.tool);else if(e.target.closest("[data-bag]"))bag()});
+window.addEventListener("keydown",e=>{if(e.key>="1"&&e.key<="5"&&cv&&document.body.contains(cv))selTool(+e.key-1)});
+/* fx */
+const PA=[];let pT=0;const emit=(x,y,n,col,o={})=>{for(let i=0;i<n;i++)PA.push({x,y,vx:(Math.random()-.5)*(o.sp||40),vy:-Math.random()*(o.up||40),g:o.g??90,l:o.l||.7,m:o.l||.7,c:col,s:2})};const ftxt=(x,y,t,c="#fff")=>PA.push({x,y,vx:0,vy:-18,g:0,l:1.3,m:1.3,t,c});
+function cam(x,y,z){if(cv){cv.style.transformOrigin=x+"% "+y+"%";cv.style.transform="scale("+z+")"}}
+function cut(L,done){const e=$("#cs");let i=0,ty,over=0;e.innerHTML=`<div class="bar t"></div><div class="bar b"></div><div class="dlg"><b id="cw"></b><p id="ctx"></p><div id="chs"></div><i id="cn">แตะเพื่อไปต่อ ▶</i></div>`;e.style.display="block";requestAnimationFrame(()=>e.classList.add("on"));
+const end=()=>{over=1;e.classList.remove("on");cam(50,50,1);setTimeout(()=>{e.style.display="none";done&&done()},500)};
+const fin=()=>{const l=L[i];if(!l.ch)return;const c=$("#chs");c.innerHTML=l.ch.map((x,j)=>`<button class="btn ${j?"ghost":""}" data-c="${j}">${x[0]}</button>`).join("");c.querySelectorAll("button").forEach(b=>b.onclick=ev=>{ev.stopPropagation();aud();sfx("tap");const r=l.ch[+b.dataset.c][1]();if(r&&r.length){L=r;i=0;show()}else end()})};
+const show=()=>{const l=L[i];$("#cw").textContent=(l.e||"")+" "+(l.w||"");if(l.c)cam(...l.c);$("#chs").innerHTML="";$("#cn").style.visibility=l.ch?"hidden":"visible";let n=0;clearInterval(ty);$("#ctx").textContent="";ty=setInterval(()=>{$("#ctx").textContent=l.t.slice(0,++n);if(n%3==0)sfx("tap");if(n>=l.t.length){clearInterval(ty);fin()}},38)};
+e.onclick=()=>{if(over)return;aud();const l=L[i];if($("#ctx").textContent.length<l.t.length){clearInterval(ty);$("#ctx").textContent=l.t;fin();return}if(l.ch)return;if(++i>=L.length)end();else show()};show()}
+const IN=()=>[{e:"👴",w:"ลุงดำ",t:`สวัสดีหลาน ${S.name}! ลุงขอยกสวนมะม่วงมะปรางนี้ให้เธอดูแลต่อนะ`,c:[50,50,1.3]},{e:"👴",w:"ลุงดำ",t:"แปลงปลูกอยู่ทางซ้าย เลือกเมล็ดในสล็อต ปลูก รดน้ำ แล้วเก็บไปขายที่ร้านค้า",c:[20,28,2.2]},{e:"👴",w:"ลุงดำ",t:"บ้านไม้หลังนั้นไว้นอนข้ามคืน ส่วนบ่อน้ำเอาเบ็ดไปตกปลาได้นะ",c:[52,22,2.2]},{e:"👴",w:"ลุงดำ",t:"ในฟาร์มมีเพื่อนบ้านของลุงอยู่หลายคน ลองเดินไปคุยดู ใครมี ❗ ลอยเหนือหัวแปลว่ามีงานให้ช่วย ส่วนมือเปล่า ✋ (กด 5) ไว้เก็บเกี่ยวกับจับหนอนนะ",c:[50,50,1.4]},{e:"👴",w:"ลุงดำ",t:"ขอให้สนุกกับชีวิตชาวสวนนะ!",c:[78,72,2]}];
+function sleep(){if(S.t%DL/DL<=.7)return toast("☀️ ยังไม่ดึก นอนไม่หลับ รอกลางคืนก่อนนะ");aud();const f=$("#fd");f.innerHTML="💤 ราตรีสวัสดิ์...";f.style.opacity=1;f.style.pointerEvents="auto";
+setTimeout(()=>{S.t=Math.ceil((S.t+1)/DL)*DL;let g=0;S.plots.forEach(p=>{if(p.u&&p.k&&!p.bug&&p.p<FR[p.k].grow){p.p=Math.min(FR[p.k].grow,p.p+5);g++}});S.hap=Math.min(100,S.hap+15);S.xp+=5;f.innerHTML=`☀️ เช้าวันใหม่<br><span style="font-size:14px">${g?"ต้นไม้โตขึ้นเพราะน้ำค้าง "+g+" ต้น":"พักผ่อนเต็มที่ +5 XP"}</span>`;sfx("ok");save()},2200);setTimeout(()=>{f.style.opacity=0;f.style.pointerEvents="none";hdr()},4300)}
+/* fish */
+const FS=[["ปลาซิว","#b8c8d0","#e8f0f4","#90a0a8",.03,.15,60,30],["ปลาช่อน","#5a6a3a","#a0b070","#44502a",.6,3.5,22,22],["ปลาดุก","#6a6a7a","#a0a0b0","#4a4a5a",.4,2.5,20,16],["ปลาทับทิม","#e05a4a","#f8b0a0","#c03a3a",.3,1.8,28,13],["ปลากระพง","#f09a3a","#fcd8a0","#d07a20",.8,5,26,9],["ปลาบึก","#3a5a9a","#a0b8e0","#2a4a7a",8,40,8,4],["ปลาคาร์ปทองคำ","#f5c030","#fde890","#d09a10",.5,3,90,2],["รองเท้าเก่า","","","",.2,.5,5,4]];
+const FM=["...ff.......","..bbbbb..t..",".bbbbbbbbtt.","bkbbbbbbbttt",".ddddddddtt.","..ddddd..t.."];
+function pickF(){let r=Math.random()*100,i=0;for(;i<7;i++){if(r<FS[i][7])break;r-=FS[i][7]}const q=FS[i];return{i,n:q[0],b:q[1],d:q[2],f:q[3],a:q[4],x:q[5],k:q[6]}}
+function fishGame(){let st=0,raf,to,z=0,t0=0,pos=0,zw=30,sp=230,cur;openM(`<h3>🎣 ตกปลา</h3><div class="fw" id="fw"><span>🔴</span></div><p id="fm">กดปล่อยเบ็ด แล้วรอปลากินเหยื่อ</p><div class="fb"><div id="fz"></div><div id="fk" style="left:0"></div></div><div id="fr"></div><button class="btn" id="fgo">ปล่อยเบ็ด</button>`,()=>{cancelAnimationFrame(raf);clearTimeout(to)});
+const fm=$("#fm"),fz=$("#fz"),fk=$("#fk"),b=$("#fgo"),fw=$("#fw"),loop=t=>{pos=(Math.sin((t-t0)/sp)+1)/2*96;fk.style.left=pos+"%";raf=requestAnimationFrame(loop)};
+b.onclick=()=>{aud();if(st==0){st=1;fw.className="fw w";$("#fr").innerHTML="";b.disabled=true;fm.textContent="รอปลา... 🌊";to=setTimeout(()=>{st=2;cur=pickF();zw=cur.i>4?16:cur.i>2?24:30;sp=cur.i>4?140:230;z=5+Math.random()*(90-zw);fz.style.width=zw+"%";fz.style.left=z+"%";fw.className="fw bt";fm.textContent="ปลากินเบ็ดแล้ว! กดตอนขีดแดงอยู่ในโซนเขียว";b.disabled=false;b.textContent="ดึง!";t0=performance.now();raf=requestAnimationFrame(loop)},900+Math.random()*2200)}
+else if(st==2){cancelAnimationFrame(raf);st=0;fw.className="fw";b.textContent="ปล่อยเบ็ดอีกครั้ง";if(pos>=z-2&&pos<=z+zw){const f=cur,w=+(f.a+Math.pow(Math.random(),1.6)*(f.x-f.a)).toFixed(2),v=Math.max(3,Math.round(w*f.k));const it={n:f.n,e:f.i==7?"👢":"🐟",w,v,i:f.i};S.fl.push(it);let au=0;if(S.fauto&&canSell(it,1)){S.fl.pop();au=Math.round(fv(it));S.coins+=au;S.q.s++;S.q.sf++}if(f.i>=4&&f.i<7)S.q.rare++;if(S.fl.length>60)S.fl.shift();const old=S.dex[f.n];if(old===undefined||w>old)S.dex[f.n]=w;S.q.f++;S.xp+=5+f.i;
+$("#fr").innerHTML=`<div class="pop" style="margin:8px 0">${f.i==7?'<div style="font-size:50px">👢</div>':'<canvas id="fc" width="96" height="48" style="width:144px;image-rendering:pixelated"></canvas>'}<br><b>${f.n}</b> · ${w} กก. · 🪙${v}${au?" · ⚡ขายอัตโนมัติ +🪙"+au:""}<br><span class="mut">${old===undefined?"✨ ชนิดใหม่!":w>old?"🏆 สถิติใหม่!":""}</span></div>`;
+if(f.i<7){const c=$("#fc").getContext("2d"),pal={b:f.b,d:f.d,f:f.f,t:f.f,k:"#111"};FM.forEach((r,j)=>{for(let i=0;i<12;i++){const col=pal[r[i]];if(col){c.fillStyle=col;c.fillRect(i*8,j*8,8,8)}}})}
+fm.textContent="ได้ของ!";sfx("ok");if(f.i>4)setTimeout(()=>cut([{e:"✨",t:f.i==6?"แสงสีทองส่องประกาย... ปลาคาร์ปทองคำในตำนาน!":"ปลาบึกยักษ์! ตัวใหญ่มากเลย!"}]),500)}else{fm.textContent="ปลาหลุด! ลองใหม่";sfx("bad")}hdr();save()}}}
+/* bag */
+function bag(){aud();const it=[];[["mango","🥭","มะม่วง"],["marian","🍑","มะปราง"],["egg","🥚","ไข่ไก่"]].forEach(([k,e,n])=>{if(S.inv[k]>0)it.push({e,c:"x"+S.inv[k],t:n+" x"+S.inv[k]})});S.fl.slice().sort((a,b)=>a.i-b.i||b.w-a.w).forEach(f=>it.push({e:f.e,c:f.w+"กก",t:`${fset(f.n).keep?"🔒 ":""}${f.n} ${f.w} กก. · มูลค่า ~🪙${f.v}`}));
+[[S.feed,"🍖","อาหารสัตว์"],[S.bait.worm,"🪱","เหยื่อไส้เดือน"],[S.bait.prem,"🦐","เหยื่อกุ้งพรีเมียม"]].forEach(([c,e,n])=>{if(c>0)it.push({e,c:"x"+c,t:n+" x"+c})});const N=Math.max(12,Math.ceil(it.length/4)*4);openM(`<h3>🎒 กระเป๋า</h3><div class="sl">${Array.from({length:N},(_,i)=>it[i]?`<div data-i="${i}">${it[i].e}<small>${it[i].c}</small></div>`:`<div style="opacity:.4"></div>`).join("")}</div><p id="bi" class="mut" style="min-height:34px">แตะช่องเพื่อดูรายละเอียด</p><div class="mut" style="font-size:11px;margin-top:6px">📖 สมุดปลา: ${FS.slice(0,7).map(f=>S.dex[f[0]]!==undefined?f[0]+" "+S.dex[f[0]]+"กก.":"❔").join(" · ")}</div>`);
+document.querySelectorAll("#m [data-i]").forEach(d=>d.onclick=()=>{$("#bi").textContent=it[+d.dataset.i].t;sfx("tap")})}
+function ensure(){if(S.pet){S.pn=S.pn||PDN[S.pet];S.hun=S.hun==null?80:S.hun;S.bond=S.bond||0;S.pday=S.pday||S.day}if(!S.dl){S.dl=1;S.t=Math.round((S.t||0)*DL/120)}S.q=Object.assign({h:0,f:0,g:0,s:0,sf:0,pl:0,w:0,b:0,rare:0},S.q);S.qs=S.qs||{};S.met=S.met||{};S.fset=S.fset||{};S.fauto=S.fauto||0;S.fl=S.fl||[];S.dex=S.dex||{};S.tool=S.tool||0;const n=typeof S.inv.fish=="number"?S.inv.fish:0;while(S.fl.length<n)S.fl.push({n:"ปลาช่อน",e:"🐟",w:.8,v:18,i:1});delete S.inv.fish;Object.defineProperty(S.inv,"fish",{enumerable:true,configurable:true,get:()=>S.fl.length,set:v=>{S.fl.sort((a,b)=>a.v-b.v);while(S.fl.length>v)S.fl.shift()}})}
+/* wrappers */
+const _begin=begin,_plot=plot,_sell=sell,_draw=draw,_bg=bgc,_mv=mv;
+begin=function(){ensure();_begin();if(!S.intro2){S.intro2=1;save();setTimeout(()=>cut(IN()),500)}};
+mv=function(dt){if($("#cs").style.display=="block"||$("#fd").style.opacity==1)return;_mv(dt)};
+plot=function(i){const p=S.plots[i],t=S.tool,pr={k:p.k,w:p.w,u:p.u,b:p.bug,h:S.q.h},rp=p.k&&p.p>=FR[p.k].grow;
+if(p.u&&!p.bug&&!rp){if(!p.k){if(t>1)return toast(t==4?"✋ มือเปล่าปลูกไม่ได้ เลือกเมล็ด 🥭/🍑 (กด 1 หรือ 2)":"เลือกสล็อตเมล็ด 🥭/🍑 ก่อนนะ (กด 1 หรือ 2)");S.seed=t?"marian":"mango"}else if(t!=2)return toast(t==4?"✋ มือเปล่ารดน้ำไม่ได้ เลือกบัวรดน้ำ 🪣 (กด 3) · แต่เก็บเกี่ยว/จับหนอนได้":"เลือกบัวรดน้ำ 🪣 ก่อนนะ (กด 3)")}
+_plot(i);if(!pr.k&&p.k)S.q.pl++;if(pr.k&&p.w>pr.w)S.q.w++;if(pr.b&&!p.bug)S.q.b++;const x=(1.5+(i%3)*2)*T,y=(1.5+(i/3|0)*2)*T;if(!pr.k&&p.k)emit(x,y,8,"#7a5a34",{l:.5});if(p.w>pr.w)emit(x,y-10,10,"#4aa8ff",{up:30,l:.6});if(S.q.h>pr.h){ftxt(x,y-26,"+"+(S.q.h-pr.h)+" "+FR[p.k].n,"#ffd84a");emit(x,y-10,12,"#ffd84a",{up:60})}if(pr.b&&!p.bug)emit(x,y-10,6,"#333");if(!pr.u&&p.u)emit(x,y,10,"#fff")};
+sell=function(k,n){const b=S.coins;if(k=="fish"){doSellFish(null,"set")}else _sell(k,n);const g=Math.round(S.coins-b);if(g>0){emit(336,56,10,"#f5c030",{up:60});ftxt(336,40,"+"+g+"🪙","#ffd84a")}};
+function hse(c){const x=224,y=26;for(let i=0;i<6;i++){c.fillStyle=i%2?"#8a4a2a":"#9a5a34";c.fillRect(x-4+(5-i)*5,y+i*4,72-(5-i)*10,4)}c.fillStyle="#8a8a8a";c.fillRect(x+46,y+2,8,14);c.fillStyle="#e8d4a8";c.fillRect(x+2,y+24,60,40);c.fillStyle="#9a6a3a";c.fillRect(x+2,y+24,60,3);c.fillStyle="#6a4020";c.fillRect(x+26,y+36,14,28);c.fillStyle="#f0c040";c.fillRect(x+36,y+50,2,2);[8,44].forEach(o=>{c.fillStyle="#6a4020";c.fillRect(x+o-1,y+33,14,14);c.fillStyle="#7ab8e0";c.fillRect(x+o,y+34,12,12)})}
+bgc=function(){const g=_bg();hse(g.getContext("2d"));return g};
+draw=function(){_draw();const c=cx,n=performance.now(),d=Math.min(.05,(n-pT)/1000||0),h=S.t%DL/DL;pT=n;
+if(h>.58&&h<=.7){c.fillStyle="rgba(255,120,40,"+(h-.58)/.12*.18+")";c.fillRect(0,0,448,320)}
+c.globalAlpha=.07;blob(c,(n/90)%700-120,90,40,"#000");blob(c,(n/70+300)%700-120,230,34,"#000");c.globalAlpha=1;
+for(let k=0;k<2;k++){const t=(n/2200+k*.5)%1;c.strokeStyle="rgba(200,245,245,"+.7*(1-t)+")";c.lineWidth=1;c.beginPath();c.ellipse(330+k*30,260-k*12,3+t*12,1.5+t*6,0,0,7);c.stroke()}
+for(let k=0;k<3;k++){const t=(n/1500+k/3)%1;blob(c,274+Math.sin(t*6)*3,26-t*26,3+t*3,"rgba(235,235,235,"+.6*(1-t)+")")}
+if(h>.7){c.fillStyle="#ffd060";c.fillRect(232,60,12,12);c.fillRect(268,60,12,12);for(let i=0;i<9;i++){const x=i*61%448+Math.sin(n/1300+i*2)*14,y=40+i*37%240+Math.cos(n/1100+i)*12;c.globalAlpha=.5+.5*Math.sin(n/300+i);c.fillStyle="#fff59a";c.fillRect(x,y,2,2);c.globalAlpha=.15;c.fillRect(x-2,y-2,6,6)}c.globalAlpha=1}
+if(pl.m&&Math.random()<.3)emit(pl.x*T+(Math.random()-.5)*8,pl.y*T,1,"#b89868",{sp:20,up:12,g:10,l:.4});
+if((S.lv=S.lv||lvl())<lvl()){S.lv=lvl();ftxt(pl.x*T,pl.y*T-44,"LEVEL UP! Lv."+S.lv,"#ffd84a");emit(pl.x*T,pl.y*T-10,24,"#ffd84a",{sp:120,up:90,l:1});sfx("ok")}
+for(let i=PA.length-1;i>=0;i--){const p=PA[i];p.l-=d;if(p.l<=0){PA.splice(i,1);continue}p.vy+=p.g*d;p.x+=p.vx*d;p.y+=p.vy*d;c.globalAlpha=Math.min(1,p.l/p.m*1.5);if(p.t){c.font="13px Kanit,sans-serif";c.fillStyle="#0008";c.fillText(p.t,p.x+1,p.y+1);c.fillStyle=p.c;c.fillText(p.t,p.x,p.y)}else{c.fillStyle=p.c;c.fillRect(p.x,p.y,p.s,p.s)}}c.globalAlpha=1};
+requestAnimationFrame(frame);
+/* v4: fish sorting, NPC quests */
+document.head.insertAdjacentHTML("beforeend","<style>#chs{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 6px}#chs .btn{font-size:14px;padding:8px 12px}.box{max-height:88vh;overflow-y:auto}.qb{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:6px}.qb u{display:block;height:100%;background:var(--grn)}.dt{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:middle;border:1px solid #0004}</style>");
+/* ---- fish sorting ---- */
+const fset=n=>(S.fset[n]=S.fset[n]||{keep:0,min:0});
+const fstep=f=>f[5]<1?.05:f[5]<6?.25:1;
+const fv=f=>f.v*S.P.fish/ALL.fish.base*bonus();
+const canSell=(f,pol)=>{const c=fset(f.n);return !c.keep&&!(pol&&c.min>0&&f.w>=c.min)};
+const dot=f=>`<i class="dt" style="background:${f[1]||"#8a6a4a"}"></i>`;
+function doSellFish(sp,mode){let L=S.fl.filter(f=>(sp==null||f.n==sp)&&canSell(f,mode!="one"));
+if(mode=="one"){L.sort((a,b)=>a.v-b.v);L=L.slice(0,1)}
+if(!L.length)return toast(sp&&fset(sp).keep?"🔒 ชนิดนี้ถูกล็อกไว้ ไม่ขาย":"ไม่มีปลาที่เข้าเงื่อนไขขาย");
+let s=0;L.forEach(f=>{s+=fv(f);S.fl.splice(S.fl.indexOf(f),1)});s=Math.round(s);S.coins+=s;S.q.s+=L.length;S.q.sf+=L.length;S.xp+=L.length;sfx("coin");toast("ขายปลา "+L.length+" ตัว ได้ 🪙"+s);upd()}
+function fishPanel(){const g={};S.fl.forEach(f=>(g[f.n]=g[f.n]||[]).push(f));
+const tot=S.fl.filter(f=>canSell(f,1)).reduce((a,f)=>a+fv(f),0);
+const rows=FS.map((f,i)=>{const a=g[f[0]];if(!a)return"";const c=fset(f[0]),kg=a.reduce((x,y)=>x+y.w,0).toFixed(2),val=Math.round(a.filter(y=>canSell(y,1)).reduce((x,y)=>x+fv(y),0));
+return `<div class="row" style="padding:7px 0;border-top:1px solid var(--line)"><span style="font-size:22px">${i==7?"👢":"🐟"}</span><div class="sp"><b>${dot(f)} ${f[0]}</b> ${c.keep?"🔒":""}<br><span class="mut">${a.length} ตัว · ${kg} กก.${c.min>0?" · เก็บ ≥"+c.min+"กก.":""} · ขายได้ ~🪙${val}</span></div><button class="btn ghost" data-fx="one:${i}">ขาย 1</button><button class="btn g" data-fx="set:${i}">ขาย</button></div>`}).join("");
+return `<div class="card"><div class="row"><b>🐟 ตลาดปลา · แยกตามชนิด</b><span class="sp"></span></div>${rows||`<p class="mut">ยังไม่มีปลาในกระเป๋า ไปตกปลาที่บ่อก่อนนะ 🎣</p>`}<button class="btn" style="width:100%;margin-top:8px" data-fx="all" ${tot?"":"disabled"}>💰 ขายตามตั้งค่าทั้งหมด (~🪙${Math.round(tot)})</button><p class="mut" style="margin:6px 0 0">ปลาที่ล็อก 🔒 หรือหนักถึงเกณฑ์ "เก็บไว้" จะไม่ถูกขาย · ปรับได้ใน ⚙️ ตั้งค่า</p></div>`}
+function fishSet(){const rows=FS.map((f,i)=>{const c=fset(f[0]),n=S.fl.filter(x=>x.n==f[0]).length;
+return `<div class="row" style="padding:7px 0;border-top:1px solid var(--line);flex-wrap:nowrap"><div class="sp" style="text-align:left"><b>${dot(f)} ${f[0]}</b> <span class="mut">(มี ${n})</span><br><span class="mut">เก็บตัวที่หนัก ≥ ${c.min>0?c.min+" กก.":"— (ไม่กำหนด)"}</span></div><button class="chip ${c.keep?"on":""}" data-fx="keep:${i}">${c.keep?"🔒 ล็อก":"🔓 ขายได้"}</button><button class="chip" data-fx="mn:${i}:-1">−</button><button class="chip" data-fx="mn:${i}:1">+</button></div>`}).join("");
+openM(`<h3 style="margin:0 0 8px">⚙️ ตั้งค่าการขายปลา</h3><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><span style="text-align:left">⚡ ขายอัตโนมัติเมื่อตกได้</span><button class="chip ${S.fauto?"on":""}" data-fx="auto">${S.fauto?"เปิด":"ปิด"}</button></div><p class="mut" style="text-align:left;margin:6px 0">ปลาที่ล็อก 🔒 หรือหนักถึงเกณฑ์ จะไม่ถูกขายทั้งแบบอัตโนมัติและปุ่ม "ขายตามตั้งค่า"</p>${rows}<div class="row" style="margin-top:10px;justify-content:center"><button class="btn ghost" data-fx="big">เก็บตัวใหญ่ทุกชนิด</button><button class="btn ghost" data-fx="rst">รีเซ็ต</button></div>`)}
+function fsRe(){if($("#m").style.display!="flex")return;const b=$("#m .box"),st=b?b.scrollTop:0;fishSet();const nb=$("#m .box");if(nb)nb.scrollTop=st}
+function fxAct(a){const [k,i,d]=a.split(":"),f=FS[+i];aud();
+if(k=="cfg")return fishSet();
+if(k=="one"||k=="set")return doSellFish(f[0],k);
+if(k=="all")return doSellFish(null,"set");
+if(k=="keep"){const c=fset(f[0]);c.keep=c.keep?0:1}
+else if(k=="mn"){const c=fset(f[0]);c.min=Math.max(0,Math.min(f[5],+(c.min+(+d)*fstep(f)).toFixed(2)))}
+else if(k=="auto")S.fauto=S.fauto?0:1;
+else if(k=="big")FS.slice(0,7).forEach(x=>{fset(x[0]).min=+(x[4]+(x[5]-x[4])*.5).toFixed(2)});
+else if(k=="rst"){S.fset={};S.fauto=0}
+sfx("tap");save();fsRe()}
+/* ---- NPC quests ---- */
+const NPCS={
+uncle:{n:"ลุงดำ",e:"👴",x:6.5,y:1.5,p:"ข้างบ้านไม้",pal:{h:"#e8e8e8",s:SKC[3],e:"#2a1a10",v:"#4a6a9a",w:"#f1e6cf",p:"#5a5a4a",b:"#3a2a1a"},
+hi:"ว่าไงหลาน {n} วันนี้สวนเป็นยังไงบ้าง?",no:"ไม่เป็นไร ไว้พร้อมแล้วค่อยมาคุยกับลุงนะ",ok:"ดีมาก! ลุงเชื่อมือเธอ",done:"ลุงไม่มีงานให้แล้วล่ะ เธอเก่งกว่าลุงแล้วนะ {n}",
+chat:["สมัยก่อนลุงปลูกมะม่วงต้นแรกตรงนี้เลยนะ","กลางคืนไปนอนที่บ้านไม้ ต้นไม้จะโตเพราะน้ำค้างด้วย","หนอนมันชอบมากินตอนเผลอ เลี้ยงแมวไว้ช่วยได้นะ"],
+intro:["เอ้า หลาน {n} ลุงดำเอง ลุงดูแลสวนนี้มาก่อนเธอ ถ้าไม่เข้าใจอะไรมาถามได้เสมอ","ลุงมีงานเล็กๆ ให้ลองทำด้วยนะ ทำเสร็จแล้วกลับมาส่ง ลุงมีรางวัลให้"],
+fin:{t:"ลุงขอยกที่ดินแปลงใหม่ให้เป็นของขวัญ!",c:100,sp:"plot"},
+q:[{id:"u1",t:"ลงมือปลูก",d:"ปลูกต้นไม้ 3 ต้น",k:"pl",g:3,r:40,x:12,o:["ก่อนอื่นลองปลูกให้ลุงดูหน่อย เลือกเมล็ดในสล็อต 1 หรือ 2 แล้วแตะแปลงว่าง","ปลูกให้ครบ 3 ต้นเลยนะ"],h:"ยังปลูกไม่ครบนะ เลือกเมล็ด (กด 1 หรือ 2) แล้วแตะแปลงว่าง",c:["เยี่ยม! ปลูกเป็นระเบียบดี เอาไปเป็นค่าเมล็ดพันธุ์นะ"]},
+{id:"u2",t:"น้ำคือชีวิต",d:"รดน้ำต้นไม้ 6 ครั้ง",k:"w",g:6,r:50,x:15,o:["ต้นไม้โตได้ก็ต่อเมื่อมีน้ำ ใช้บัวรดน้ำ 🪣 (กด 3) แล้วแตะต้นไม้","รดน้ำให้ได้ 6 ครั้ง ดูไอคอน 💧 กับ ⚠️ เหนือต้นด้วยนะ"],h:"รดน้ำต่อเลย! ถ้าเห็น ⚠️ แปลว่าต้นไม้ขาดน้ำ",c:["สวนเขียวขึ้นเยอะเลย ขอบใจนะหลาน"]},
+{id:"u3",t:"ศัตรูตัวจิ๋ว",d:"จับหนอน 🐛 2 ตัว",k:"b",g:2,r:60,x:18,o:["ช่วงนี้มีหนอนมากินใบ มันทำให้ต้นไม้หยุดโต","เห็น 🐛 เมื่อไหร่แตะจับได้เลย ใช้มือเปล่า ✋ (กด 5) ก็ได้ จับให้ 2 ตัวนะ"],h:"ยังจับหนอนไม่ครบ ลองดูต้นที่ไม่ยอมโตสิ",c:["เก่งมาก! หนอนพวกนี้ซนจริงๆ"]},
+{id:"u4",t:"ผลผลิตแรก",d:"เก็บเกี่ยวผลไม้ 10 ผล",k:"h",g:10,r:90,x:30,o:["ถึงเวลาที่ลุงรอคอย เก็บผลไม้ให้ได้ 10 ผลแล้วเอามาอวดลุงหน่อย","ผลสุกจะมีผลไม้ลอยอยู่เหนือต้น แตะเก็บได้เลย"],h:"ผลไม้ยังเก็บไม่ถึง 10 ผล รอต้นสุกก่อนนะ",c:["โห! ผลสวยทั้งนั้น ลุงภูมิใจในตัวหลานจริงๆ"]}]},
+mae:{n:"ป้าแดง",e:"👵",x:2.6,y:7.2,p:"ข้างที่เลี้ยงสัตว์",pal:{h:"#e8a020",s:SKC[1],e:"#2a1a10",v:"#d6453d",w:"#f6f1e4",p:"#7a3a5a",b:"#3a2a1a"},
+hi:"ว่าไงจ๊ะหลาน {n} มาซื้อมาขายหรือจ๊ะ?",no:"ได้จ้ะ ว่างเมื่อไหร่ค่อยมาคุยกับป้านะ",ok:"ขอบใจนะจ๊ะ ป้ารอข่าวดีอยู่",done:"ตอนนี้ป้าไม่มีอะไรให้ช่วยแล้ว แวะมาซื้อขายกันได้ตลอดนะ",
+chat:["ราคามะม่วงขึ้นลงตามข่าว ตามอ่านข่าวในตลาดไว้นะจ๊ะ","เก็บของรอราคาสูงแล้วค่อยขาย ได้กำไรกว่าเยอะ","หมาช่วยให้ขายได้ราคาดีขึ้นด้วยนะ รู้ไหม?"],
+intro:["ว้าย! หลานคนใหม่ของลุงดำใช่ไหมจ๊ะ ป้าแดงเอง แม่ค้าประจำตลาดนี้","ของที่เก็บได้เอามาขายที่แผงป้าได้นะ ถ้าช่วยป้าทำงาน ป้ามีรางวัลให้ด้วย"],
+fin:{t:"ป้าขอลดค่าธรรมเนียมแผงให้ ขายของได้ราคาดีขึ้น +5% ถาวร!",c:100,sp:"bonus"},
+act:()=>["🏪 ไปดูราคาตลาด",()=>{setTimeout(()=>go("mkt"),600);return null}],
+q:[{id:"m1",t:"เปิดแผงขายของ",d:"ขายของที่ตลาด 10 ชิ้น",k:"s",g:10,r:60,x:15,o:["ป้ามีเรื่องขอร้องหน่อย ลองเอาของไปขายที่ตลาดสัก 10 ชิ้น ป้าอยากดูฝีมือหลาน","ดูราคาก่อนขายด้วยนะ ราคาขึ้นลงตลอดเวลา"],h:"ยังขายไม่ครบ ไปดูราคาที่ตลาดแล้วขายตอนราคาดีๆ นะจ๊ะ",c:["ขายคล่องดีนี่! หลานมีหัวการค้า"]},
+{id:"m2",t:"มะม่วงน้ำปลาหวาน",d:"ส่งมะม่วง 6 ผล",give:()=>S.inv.mango,take:()=>{S.inv.mango-=6},g:6,r:100,x:25,o:["ลูกค้าสั่งมะม่วงน้ำปลาหวานเยอะเลย ป้าขอซื้อมะม่วง 6 ผล ให้ราคาพิเศษ!","เก็บไว้ในกระเป๋าแล้วเอามาส่งป้าได้เลย"],h:"มะม่วงยังไม่ครบ 6 ผลนะ (ต้องมีในกระเป๋า)",c:["หอมจังเลย! ป้าจะทำน้ำปลาหวานสูตรลับ ขอบใจจ้ะ"]},
+{id:"m3",t:"มะปรางแช่อิ่ม",d:"ส่งมะปราง 5 ผล",give:()=>S.inv.marian,take:()=>{S.inv.marian-=5},g:5,r:90,x:25,o:["ต่อไปป้าอยากทำมะปรางแช่อิ่ม ขอมะปราง 5 ผลนะจ๊ะ"],h:"มะปรางยังไม่ครบ 5 ผลนะ",c:["หวานฉ่ำเชียว! ป้าขอบใจมาก"]},
+{id:"m4",t:"ไข่สดจากฟาร์ม",d:"ส่งไข่ไก่ 3 ฟอง",give:()=>S.inv.egg,take:()=>{S.inv.egg-=3},g:3,r:80,x:20,o:["ป้าอยากได้ไข่ไก่สดๆ 3 ฟอง ถ้ายังไม่มีไก่ ไปรับที่บ้านสัตว์เลี้ยงมุมซ้ายล่างนะ"],h:"ไข่ยังไม่ครบ 3 ฟอง ไก่ออกไข่ทุก 30 วินาทีถ้ามีความสุขพอนะ",c:["ไข่ฟองโตทั้งนั้น! ป้าประทับใจจริงๆ"]}]},
+tho:{n:"ตาโต",e:"🧓",x:8.3,y:9.2,p:"ริมบ่อปลา",pal:{h:"#9a9a9a",s:SKC[2],e:"#2a1a10",v:"#2a8f98",w:"#e8e0c8",p:"#4a4a3a",b:"#2a2a1a"},
+hi:"ชู่ว์... เบาๆ นะหลาน {n} เดี๋ยวปลาตกใจ",no:"ไม่เป็นไร ปลายังว่ายอยู่ในบ่อ ไว้ค่อยมาใหม่",ok:"ดี ตาจะรอดูฝีมือ",done:"ตาไม่มีอะไรจะสอนอีกแล้ว หลานเป็นนักตกปลาตัวจริงแล้ว",
+chat:["ปลาบึกตัวใหญ่เคยลากเบ็ดตาลงน้ำไปเลย ฮ่าๆ","ตัวใหญ่ๆ อย่ารีบขาย เก็บไว้รอราคาดีๆ ดีกว่า","เจอรองเท้าเก่าก็อย่าเสียใจ ขายได้นิดหน่อยอยู่"],
+intro:["...ชู่ว์ เบาๆ เดี๋ยวปลาตกใจ ตาโตเอง นั่งตกปลาที่บ่อนี้มา 30 ปีแล้ว","ถ้าอยากตกปลาเก่งๆ มาคุยกับตาได้ ตาจะสอนให้ รวมถึงวิธีขายปลาแยกชนิดด้วย"],
+fin:{t:"ตาขอมอบเงินเก็บค่าเหยื่อให้ ใช้ให้เป็นประโยชน์นะ!",c:120},
+act:()=>["⚙️ ตั้งค่าการขายปลา",()=>{setTimeout(fishSet,600);return null}],
+q:[{id:"f1",t:"ลองวางเบ็ด",d:"ตกปลา 3 ตัว",k:"f",g:3,r:50,x:15,o:["ตาอยากรู้ว่าหลานตกปลาเป็นไหม เลือกเบ็ด 🎣 (กด 4) แล้วเดินไปริมบ่อ","ตกให้ได้ 3 ตัว แล้วมาเล่าให้ตาฟัง"],h:"ยังตกไม่ครบ ใจเย็นๆ กดตอนขีดแดงอยู่ในโซนเขียวนะ",c:["ฝีมือใช้ได้เลยนี่!"]},
+{id:"f2",t:"ปลาช่อนตัวโต",d:"ส่งปลาช่อนหนัก ≥ 1.2 กก. 1 ตัว",give:()=>S.fl.filter(f=>f.n=="ปลาช่อน"&&f.w>=1.2).length,take:()=>{const a=S.fl.filter(f=>f.n=="ปลาช่อน"&&f.w>=1.2).sort((a,b)=>a.w-b.w)[0];if(a)S.fl.splice(S.fl.indexOf(a),1)},g:1,r:120,x:30,o:["ตาอยากได้ปลาช่อนตัวโตๆ หนักอย่างน้อย 1.2 กก. เอามาให้ตาหน่อย","ตัวเล็กไปให้เก็บไว้ก่อน ล็อกปลาช่อนไว้ไม่ให้เผลอขายได้ที่ ⚙️ ตั้งค่าขายปลา"],h:"ยังไม่มีปลาช่อนหนัก 1.2 กก. ขึ้นไปในกระเป๋าเลย",c:["ตัวอ้วนพีจริงๆ! คืนนี้ตาได้กินดีแน่"]},
+{id:"f3",t:"ปลาหายาก",d:"ตกปลากระพง ปลาบึก หรือปลาคาร์ปทอง 1 ตัว",k:"rare",g:1,r:150,x:40,o:["ในบ่อนี้มีปลาหายากอยู่ ปลากระพง ปลาบึก หรือปลาคาร์ปทองคำ","ตกให้ได้สักตัว ตาจะให้รางวัลอย่างงาม"],h:"ปลาหายากต้องใช้โชคกับความอดทน ลองตกต่อไปนะ",c:["โอ้โฮ! ตาไม่เคยเห็นใครตกได้ง่ายๆ แบบนี้"]},
+{id:"f4",t:"สมุดบันทึกปลา",d:"ตกปลาให้ได้ 4 ชนิดที่ต่างกัน",fn:()=>Object.keys(S.dex).filter(n=>n!="รองเท้าเก่า").length,g:4,r:130,x:35,o:["ตาอยากรู้ว่าในบ่อมีปลากี่ชนิด ลองตกให้ได้ 4 ชนิดที่ต่างกัน","ดูสมุดปลา 📖 ได้ในกระเป๋า 🎒"],h:"ยังได้ปลาไม่ครบ 4 ชนิด สมุดปลาอยู่ในกระเป๋า 🎒",c:["เก่งมาก ตอนนี้หลานเป็นนักตกปลาตัวจริงแล้ว"]},
+{id:"f5",t:"ขายปลาแยกชนิด",d:"ขายปลาที่ตลาดปลา 6 ตัว",k:"sf",g:6,r:100,x:30,o:["ตกปลามาแล้วต้องขายให้เป็นด้วย ไปที่แท็บตลาด 🏪 เปิดตลาดปลา ขายแยกชนิดให้ได้ 6 ตัว","ตั้งค่า ⚙️ ได้ว่าตัวไหนจะเก็บ ตัวไหนจะขาย"],h:"ยังขายปลาไม่ครบ 6 ตัว ลองดูตลาดปลาในแท็บตลาด 🏪",c:["จัดการเป็นระบบดีจริง! ตาวางใจแล้ว"]}]},
+kid:{n:"น้องมะปราง",e:"👧",x:12.7,y:3.5,p:"ใกล้ต้นมะม่วงใหญ่",pal:{h:"#2a1a10",s:SKC[1],e:"#2a1a10",v:"#f5b82e",w:"#ffffff",p:"#3a6a9a",b:"#6a3a2a"},
+hi:"พี่ {n} มาแล้ว! เล่นกับหนูหน่อยสิคะ",no:"งั้นไว้คราวหน้านะคะ หนูรออยู่ตรงนี้!",ok:"เย้! หนูรอดูอยู่นะคะ",done:"ตอนนี้หนูไม่มีอะไรขอแล้วค่ะ ขอบคุณพี่มากนะคะ",
+chat:["หนูชอบมะม่วงที่สุดเลย แต่ไม่ชอบหนอน!","ต้นไม้ใหญ่ตรงนั้นมีผลไม้ตกลงมาเยอะเลยนะคะ","โตขึ้นหนูอยากเป็นชาวสวนเหมือนพี่!"],
+intro:["สวัสดีค่ะพี่! หนูชื่อน้องมะปราง อาศัยอยู่ใกล้ๆ นี่เอง","หนูชอบมะม่วงที่สุดเลย! มีเรื่องอยากให้พี่ช่วยด้วยนะคะ"],
+fin:{t:"หนูมีของขวัญให้ค่ะ! เป็นเงินเก็บของหนูเอง ✨",c:120},
+q:[{id:"k1",t:"เก็บมะม่วงกัน",d:"เล่นมินิเกมเก็บมะม่วง 1 รอบ",k:"g",g:1,r:40,x:12,o:["พี่คะ! ไปเล่นเก็บมะม่วงที่ต้นใหญ่ด้วยกันไหม? แตะผลไม้ที่ตกลงมา ระวังหนอนนะ","เล่นให้จบ 1 รอบนะคะ"],h:"ยังไม่ได้เล่นเลยค่ะ ไปที่ต้นมะม่วงใหญ่เลย!",c:["สนุกจังเลย! ขอบคุณที่เล่นด้วยค่ะพี่"]},
+{id:"k2",t:"นักเก็บมือทอง",d:"เล่นมินิเกมเก็บมะม่วงอีก 2 รอบ",k:"g",g:2,r:80,x:20,o:["หนูอยากเห็นพี่เก็บแต้มสูงๆ เล่นอีก 2 รอบนะคะ!"],h:"อีกนิดเดียวค่ะ สู้ๆ!",c:["พี่เก่งที่สุดเลย!"]},
+{id:"k3",t:"เพื่อนสี่ขา",d:"ทำให้สัตว์เลี้ยงมีความสุข ≥ 70%",fn:()=>S.pet&&S.hap>=70?1:0,g:1,r:70,x:20,o:["หนูอยากเห็นสัตว์เลี้ยงมีความสุข พี่ช่วยดูแลให้ความสุขถึง 70% นะคะ","ถ้ายังไม่มี ไปรับที่บ้านเล็กมุมซ้ายล่าง ให้อาหาร 🍖 และเล่นด้วย 🎾 ได้ค่ะ"],h:"สัตว์เลี้ยงยังไม่มีความสุขพอค่ะ ลองให้อาหารกับเล่นด้วยดูนะ",c:["น่ารักจัง! ขอบคุณที่ดูแลเพื่อนสี่ขานะคะ"]}]}
+};
+Object.values(NPCS).forEach(n=>SOL.add(Math.floor(n.x)+","+Math.floor(n.y)));
+const nc=(x,y,z=2.2)=>[x*T/4.48,(y*T-22)/3.2,z];
+const D=(n,t,c)=>({e:n.e,w:n.n,t:t.replace(/\{n\}/g,S.name),c:c||nc(n.x,n.y)});
+const PC2=()=>nc(pl.x,pl.y,2);
+const curQ=id=>NPCS[id].q.find(q=>!(S.qs[q.id]&&S.qs[q.id].st==2));
+const qv=q=>{if(q.give)return Math.min(q.g,q.give());if(q.fn)return Math.min(q.g,q.fn());const s=S.qs[q.id];return s?Math.max(0,Math.min(q.g,(S.q[q.k]||0)-s.base)):0};
+const nst=id=>{const q=curQ(id);return !q?0:!S.qs[q.id]?1:qv(q)>=q.g?3:2};
+function menu(id,re){const n=NPCS[id],q=curQ(id),s=q&&S.qs[q.id],ch=[];let t=re?"มีอะไรให้ช่วยอีกไหม?":n.hi;
+if(!q)t=re?"มีอะไรอีกไหม?":n.done;
+else if(!s)ch.push(["📜 มีงานให้ช่วยไหม?",()=>offer(id,q)]);
+else if(qv(q)>=q.g)ch.push(["✅ ส่งภารกิจ “"+q.t+"”",()=>finish(id,q)]);
+else ch.push(["📍 ถามเรื่อง “"+q.t+"” ("+qv(q)+"/"+q.g+")",()=>[D(n,q.h),...menu(id,1)]]);
+ch.push(["💬 คุยเล่น",()=>[D(n,n.chat[Math.random()*n.chat.length|0]),...menu(id,1)]]);
+if(n.act)ch.push(n.act(id));
+ch.push(["👋 ไว้ก่อนนะ",()=>null]);
+const l=D(n,t);l.ch=ch;return [l]}
+function offer(id,q){const n=NPCS[id],L=q.o.map(t=>D(n,t));L[L.length-1].ch=[["✅ รับภารกิจ",()=>accept(id,q)],["⏳ ขอคิดดูก่อน",()=>[D(n,n.no)]]];return L}
+function accept(id,q){const n=NPCS[id];S.qs[q.id]={st:1,base:S.q[q.k]||0};sfx("ok");save();ftxt(pl.x*T,pl.y*T-40,"ภารกิจใหม่!","#ffd84a");
+return [D(n,n.ok),{e:"📜",w:"ภารกิจใหม่!",t:"“"+q.t+"” — "+q.d+" (รางวัล 🪙"+q.r+")",c:PC2()}]}
+function finish(id,q){const n=NPCS[id];if(qv(q)<q.g)return [D(n,q.h)];
+if(q.take)q.take();S.qs[q.id].st=2;S.coins+=q.r;S.xp+=q.x;sfx("coin");
+emit(pl.x*T,pl.y*T-10,24,"#ffd84a",{sp:110,up:90,l:1});ftxt(pl.x*T,pl.y*T-30,"+"+q.r+"🪙","#ffd84a");
+const L=q.c.map(t=>D(n,t));L.push({e:"🎁",w:"รางวัลภารกิจ",t:"ภารกิจ “"+q.t+"” สำเร็จ! ได้รับ 🪙"+q.r+" และ "+q.x+" XP",c:PC2()});
+if(!curQ(id)&&n.fin){const f=n.fin;S.coins+=f.c;if(f.sp=="plot"){const p=S.plots.find(p=>!p.u);if(p)p.u=1}if(f.sp=="bonus")S.mae=1;
+L.push(D(n,f.t));L.push({e:"🏆",w:"ครบทุกภารกิจของ "+n.n,t:"ได้รับของขวัญพิเศษ 🪙"+f.c+(f.sp=="plot"?" และแปลงที่ดินฟรี":f.sp=="bonus"?" และราคาขาย +5% ถาวร":""),c:PC2()});emit(pl.x*T,pl.y*T-10,40,"#fff59a",{sp:160,up:110,l:1.4})}
+hdr();save();return L}
+function talk(id){if($("#cs").style.display=="block")return;aud();const n=NPCS[id];let L=[];
+if(!S.met[id]){S.met[id]=1;save();L=n.intro.map(t=>D(n,t));L[0].c=nc(n.x,n.y,2.6)}
+cut(L.concat(menu(id)))}
+function rQ(m){let h=`<p class="mut">📜 เดินไปคุยกับ NPC ในฟาร์มเพื่อรับภารกิจ (ดู ❗ ลอยเหนือหัว) ทำเสร็จแล้วกลับไปคุยเพื่อส่ง</p>`;
+h+=Object.entries(NPCS).map(([id,n])=>{const q=curQ(id),s=q&&S.qs[q.id],dn=n.q.filter(x=>S.qs[x.id]&&S.qs[x.id].st==2).length,v=q?qv(q):0;let b;
+if(!q)b=`<span class="up">✅ ภารกิจครบทุกข้อแล้ว</span>`;
+else if(!s)b=`<span class="mut">❗ มีภารกิจใหม่ — ไปคุยที่ ${n.p}</span>`;
+else b=`<b>${q.t}</b><br><span class="mut">${q.d} · รางวัล 🪙${q.r}</span><div class="qb"><u style="width:${v/q.g*100}%"></u></div><div class="row" style="margin-top:4px"><span class="mut">${v}/${q.g}</span><span class="sp"></span>${v>=q.g?`<span class="up">❓ พร้อมส่ง! ไปหา ${n.n}</span>`:`<span class="mut">กำลังทำ…</span>`}</div>`;
+return `<div class="card"><div class="row"><span style="font-size:30px">${n.e}</span><div class="sp"><b>${n.n}</b><br><span class="mut">📍 ${n.p} · สำเร็จ ${dn}/${n.q.length}</span></div></div><div style="margin-top:6px">${b}</div></div>`}).join("");m.innerHTML=h}
+function drawNpc(id,n,now){const c=cx,px=n.x*T,py=n.y*T,bob=Math.sin(now/500+n.x*3)>.6?-1:0;
+c.fillStyle="#0003";c.fillRect(px-9,py-2,18,4);spr(PL,n.pal,px-10,py-26+bob,2);
+if(id=="uncle"){c.fillStyle="#f4f4f4";c.fillRect(px-6,py-16+bob,12,4)}
+if(id=="tho"){c.fillStyle="#e8c46a";c.fillRect(px-13,py-26+bob,26,3);c.fillStyle="#f0d080";c.fillRect(px-8,py-32+bob,16,7)}
+if(id=="kid"){c.fillStyle="#e0405a";c.fillRect(px+3,py-28+bob,6,5)}
+if(id=="mae"){c.fillStyle="#d6453d";c.fillRect(px-9,py-27+bob,18,3)}
+const st=nst(id);if(st){c.font="16px serif";c.fillStyle="#000";c.fillText(st==1?"❗":st==3?"❓":"💬",px,py-40+Math.sin(now/250)*2)}}
+function rSet(m){m.innerHTML=`<div class="card"><b>⚙️ ตั้งค่าเกม</b><div class="row" style="margin-top:10px"><button class="chip ${mus?"on":""}" data-snd="m">🎵 เพลง ${mus?"เปิด":"ปิด"}</button><button class="chip ${sfxOn?"on":""}" data-snd="s">🔔 เสียง ${sfxOn?"เปิด":"ปิด"}</button></div></div><div class="card row"><div class="sp"><b>🗑️ เริ่มเกมใหม่</b><br><span class="mut">ลบเซฟทั้งหมด</span></div><button class="chip" data-snd="r">เริ่มใหม่</button></div>`}
+pt.f=1;pt.nt=0;pt.tx=pt.x;pt.ty=pt.y;
+function petWalk(dt){const n=performance.now();if(n>pt.nt){pt.nt=n+2500+Math.random()*4500;if(Math.random()<.65){pt.tx=3.5+Math.random()*5;pt.ty=6.6+Math.random()*2.9}else{pt.tx=pt.x;pt.ty=pt.y}}
+const dx=pt.tx-pt.x,dy=pt.ty-pt.y,d=Math.hypot(dx,dy);if(d>.12){pt.x+=dx/d*.7*dt;pt.y+=dy/d*.7*dt;if(Math.abs(dx)>.05)pt.f=dx>0?1:-1}}
+const PDN={dog:"โกโก้",cat:"มะลิ",chick:"ไข่ดาว"};
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function namePet(first){openM(`<div style="font-size:50px">${PETS[S.pet].e}</div><h3 style="margin:4px 0">${first?"ตั้งชื่อสัตว์เลี้ยงใหม่":"เปลี่ยนชื่อสัตว์เลี้ยง"}</h3><input class="t" id="pn" maxlength="12" placeholder="${PDN[S.pet]}" value="${esc(S.pn||"")}"><br><button class="btn" id="pok" style="margin-top:10px">ตกลง</button>`);
+$("#pok").onclick=()=>{S.pn=$("#pn").value.trim()||PDN[S.pet];sfx("ok");closeM()}}
+function rPet(m){if(!S.pet){m.innerHTML=`<p>รับสัตว์เลี้ยงมาช่วยงานในสวน!</p>`+Object.entries(PETS).map(([k,v])=>`<div class="card row"><span style="font-size:36px">${v.e}</span><div class="sp"><b>${v.n}</b><br><span class="mut">${v.d}</span></div><button class="btn" data-adopt="${k}">🪙${v.c}</button></div>`).join("");return}
+const v=PETS[S.pet],lv=Math.floor(Math.sqrt(S.bond/10))+1,lo=(lv-1)**2*10,hi=lv*lv*10,bp=(S.bond-lo)/(hi-lo)*100,age=Math.max(1,S.day-S.pday+1);
+const mood=S.hun<20?"หิวมาก 🍖":S.hap<30?"เศร้า 😢":S.hap>70&&S.hun>50?"ร่าเริง 😄":"สบายดี 🙂",ok=S.hap>30;
+const br=(l,x,c)=>`<div class="row" style="gap:6px;margin:5px 0;flex-wrap:nowrap"><span style="width:92px;text-align:left;font-size:13px;white-space:nowrap">${l}</span><div style="flex:1;height:10px;background:var(--line);border-radius:5px;overflow:hidden"><div style="height:100%;width:${x}%;background:${c}"></div></div><span class="mut" style="width:38px;text-align:right">${Math.round(x)}%</span></div>`;
+m.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:70px">${v.e}</div><div class="row" style="justify-content:center"><b style="font-size:18px">${esc(S.pn)}</b><button class="chip" data-rn="1">✏️ เปลี่ยนชื่อ</button></div><span class="mut">${v.n}ของ ${esc(S.name)} · อายุ ${age} วัน · Lv.${lv}</span><p style="margin:8px 0 2px">สถานะ: <b>${mood}</b></p><p class="mut" style="margin:0">${v.d} ${ok?"✅ ทำงานอยู่":"⏸️ หยุดทำงาน (ความสุขต่ำกว่า 30)"}</p><div style="margin-top:8px">${br("❤️ ความสุข",S.hap,"#e5557a")}${br("🍖 ความอิ่ม",S.hun,"#e58a00")}${br("🤝 ความสนิท",bp,"#4a9b3c")}</div><div class="row" style="justify-content:center;margin-top:8px"><button class="btn" data-pa="feed">🍖 ให้อาหาร</button><button class="btn g" data-pa="play">🎾 เล่นด้วย</button></div><p class="mut">ให้อาหารใช้ปลา 1 ตัว (ถ้าไม่มีจ่าย 🪙5) · ถ้าหิว (อิ่มต่ำกว่า 20%) ความสุขจะลดเร็วขึ้น</p></div>`}
+function petAct(a){if(a=="feed"){if(S.hun>=98)return toast(S.pn+" อิ่มแล้ว");if(S.inv.fish>0)S.inv.fish--;else if(S.coins>=5)S.coins-=5;else return toast("ไม่มีปลาและเงินไม่พอ");S.hun=Math.min(100,S.hun+35);S.hap=Math.min(100,S.hap+12);S.bond+=3;toast("🍖 "+S.pn+" กินอย่างเอร็ดอร่อย")}else{if(S.hun<10)return toast(S.pn+" หิวเกินกว่าจะเล่น ให้อาหารก่อนนะ");S.hap=Math.min(100,S.hap+8);S.hun=Math.max(0,S.hun-4);S.bond+=2;S.xp+=1;toast("🎾 เล่นกับ "+S.pn)}sfx("ok");upd()}
+/* game loop */
+function tick(){S.t++;const d=Math.floor(S.t/DL)+1;if(d>S.day){S.day=d;toast("🌅 วันใหม่แล้ว")}
+const catOn=S.pet=="cat"&&S.hap>30;S.plots.forEach(p=>{if(!p.u||!p.k)return;const F=FR[p.k];if(p.w>0)p.w--;if(p.bug&&catOn&&Math.random()<.4)p.bug=0;if(p.p<F.grow){if(!p.bug&&p.w>0)p.p++;if(!p.bug&&Math.random()<.006)p.bug=1}});
+if(S.pet){S.hun=Math.max(0,(S.hun==null?80:S.hun)-.2);S.hap=Math.max(0,S.hap-.25-(S.hun<20?.25:0));if(S.pet=="chick"&&S.hap>30&&S.t%30==0){S.inv.egg++;toast("🐔 ไก่ออกไข่ 🥚")}}
+if(S.t%8==0){for(const k in ALL){const b=ALL[k].base,p=S.P[k];S.P[k]=Math.min(b*2.4,Math.max(b*.4,p*(1+(Math.random()-.5)*.2)+(b-p)*.08));S.H[k].push(S.P[k]);if(S.H[k].length>24)S.H[k].shift()}if(tab=="mkt")render()}
+if(S.t%55==0){const n=NEWS[Math.random()*NEWS.length|0];S.P[n[1]]*=n[2];S.news=n[0];toast(n[0]);if(tab=="mkt")render()}
+if(S.t%5==0)save();hdr();updFarm();if(tab=="q")render();if(tab=="pet"&&S.pet&&S.t%3==0)render()}
+/* events */
+document.addEventListener("click",e=>{const g=s=>e.target.closest(s);let x;
+if(x=g("[data-p]"))plot(+x.dataset.p);else if(x=g("[data-seed]")){S.seed=x.dataset.seed;render()}
+else if(x=g("[data-s]"))sell(x.dataset.s,x.dataset.n);
+else if(x=g("[data-adopt]")){const k=x.dataset.adopt;if(S.coins<PETS[k].c)return toast("เงินไม่พอ");S.coins-=PETS[k].c;S.pet=k;S.hap=80;S.hun=80;S.bond=0;S.pday=S.day;S.pn=PDN[k];sfx("ok");upd();namePet(1)}
+else if(x=g("[data-pa]"))petAct(x.dataset.pa);else if(x=g("[data-rn]"))namePet();
+else if(x=g("[data-g]"))x.dataset.g=="fish"?fishGame():catchGame();
+else if(x=g("[data-q]")){const i=+x.dataset.q;S.q.c[i]=1;S.coins+=QS[i].r;S.xp+=10;sfx("coin");upd()}
+else if(x=g("[data-snd]")){const k=x.dataset.snd;if(k=="m")mus=!mus;else if(k=="s")sfxOn=!sfxOn;else if(confirm("ลบเซฟแล้วเริ่มใหม่?")){S=null;try{localStorage.removeItem("mangoSave3")}catch(e){}return start()}render()}
+else if(x=g("[data-fx]"))fxAct(x.dataset.fx);else if(x=g("[data-t]"))go(x.dataset.t)});
+/* start / character creation */
+function start(){const c=$("#cr");c.style.display="flex";S=S&&S.name?S:null;
+if(S){c.innerHTML=`<div class="box"><div style="font-size:50px">🥭🍑</div><h2>สวนมะม่วงมะปราง</h2><p>ยินดีต้อนรับกลับ ${av()}<br>${S.name}</p><button class="btn" id="go">เล่นต่อ</button></div>`;$("#go").onclick=begin;return}
+let sk=0,ht=1;const draw=()=>{c.innerHTML=`<div class="box"><div style="font-size:40px">🥭🍑</div><h2 style="margin:4px">สร้างตัวละคร</h2><div style="font-size:60px;margin-top:6px"><span class="av" style="font-size:60px;padding-top:26px"><i style="font-size:36px">${HT[ht]}</i>${SK[sk]}</span></div><div class="pk">${SK.map((s,i)=>`<button data-k="${i}" class="${sk==i?"on":""}">${s}</button>`).join("")}</div><div class="pk">${HT.map((h,i)=>`<button data-h="${i}" class="${ht==i?"on":""}">${h||"🚫"}</button>`).join("")}</div><input class="t" id="nm" maxlength="12" placeholder="ชื่อชาวสวน" value="${window._nm||""}"><br><button class="btn" id="go" style="margin-top:12px">เริ่มทำสวน!</button></div>`;
+c.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{window._nm=$("#nm").value;sk=+b.dataset.k;draw()});c.querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{window._nm=$("#nm").value;ht=+b.dataset.h;draw()});
+$("#go").onclick=()=>{S=fresh();S.name=$("#nm").value.trim()||"ชาวสวน";S.skin=sk;S.hat=ht;begin()}};draw()}
+function begin(){aud();$("#cr").style.display="none";hdr();nav();render();toast("ปลูกต้นไม้แล้วรดน้ำ รอเก็บเกี่ยวได้เลย!");if(!window._lp)window._lp=setInterval(tick,1000)}
+/* v5: shop (pet food + bait), bedroom */
+document.head.insertAdjacentHTML("beforeend",`<style>#br{position:fixed;inset:0;z-index:7;background:#2b1d14;display:none;flex-direction:column;align-items:center;justify-content:center;padding:12px;gap:10px}#br .rm{position:relative;width:100%;max-width:440px;aspect-ratio:7/8;max-height:70vh;border-radius:14px;overflow:hidden;border:4px solid #5a3a22;transition:filter 1s}#br .rm.n{filter:brightness(.55) saturate(.8)}.wl{position:absolute;inset:0 0 38% 0;background:repeating-linear-gradient(90deg,#e8c9a0 0 28px,#e0bf94 28px 30px)}.fl{position:absolute;inset:62% 0 0 0;background:repeating-linear-gradient(90deg,#a8743f 0 40px,#946336 40px 42px)}.fl:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:#6a4020}.rt{position:absolute;left:50%;top:76%;width:46%;height:16%;transform:translateX(-50%);border-radius:50%;background:#c8505a;border:4px solid #e8a0a8}.it{position:absolute;line-height:1;transform:translate(-50%,-50%)}.win{position:absolute;left:50%;top:7%;width:36%;height:30%;transform:translateX(-50%);border:6px solid #7a4a28;border-radius:6px;background:linear-gradient(#8fd0ff,#cfeeff);display:flex;align-items:center;justify-content:center;font-size:34px}.win.n{background:linear-gradient(#0e1a44,#2a3a7a)}.bed{position:absolute;left:7%;top:42%;width:60%;height:34%;background:#7a4a28;border-radius:10px 10px 6px 6px;cursor:pointer}.bed:before{content:"";position:absolute;left:4%;right:4%;top:14%;bottom:8%;background:#e8e0d0;border-radius:8px}.bed .bl{position:absolute;left:30%;right:4%;top:22%;bottom:8%;background:#d8464f;border-radius:6px;background-image:repeating-linear-gradient(90deg,transparent 0 14px,#ffffff30 14px 16px)}.bed .pw{position:absolute;left:7%;top:24%;width:20%;height:34%;background:#fff;border-radius:8px}.bed.zz:after{content:"💤";position:absolute;right:6%;top:-22%;font-size:24px;animation:bl 1.2s infinite}#br .btn{min-width:130px}</style><div id="br"></div>`);
+document.body.appendChild($("#br"));
+const inRoom=()=>$("#br").style.display=="flex";
+const _ens=ensure;ensure=function(){_ens();S.feed=S.feed||0;if(!S.bait)S.bait={worm:10,prem:0};S.bsel=S.bsel||"worm"};
+const PR={feed:8,worm:3,prem:12};
+function shopHTML(){const r=(e,n,d,k,c,a,b)=>`<div class="row" style="margin-top:8px"><span style="font-size:26px">${e}</span><div class="sp"><b>${n}</b> <span class="mut">มี ${c}</span><br><span class="mut">${d} · 🪙${PR[k]}/ชิ้น</span></div><button class="btn ghost" data-buy="${k}:${a}">+${a}</button><button class="btn g" data-buy="${k}:${b}">+${b}</button></div>`;
+return `<div class="card"><b>🛒 ร้านค้าในฟาร์ม</b>${r("🍖","อาหารสัตว์","เติมความอิ่มเยอะกว่าปลา","feed",S.feed,1,5)}${r("🪱","เหยื่อไส้เดือน","เหยื่อธรรมดา ใช้ 1 ชิ้น/ครั้ง","worm",S.bait.worm,1,10)}${r("🦐","เหยื่อกุ้งพรีเมียม","ปลาหายากมาบ่อยขึ้น ~2.5 เท่า","prem",S.bait.prem,1,5)}</div>`}
+const _rM=rMkt;rMkt=function(m){_rM(m);m.insertAdjacentHTML("afterbegin",shopHTML())};
+const _rP=rPet;rPet=function(m){_rP(m);if(S.pet)m.insertAdjacentHTML("beforeend",`<div class="card row"><span style="font-size:26px">🍖</span><div class="sp"><b>อาหารสัตว์</b> <span class="mut">มี ${S.feed} · ให้อาหารจะใช้อันนี้ก่อน</span></div><button class="btn g" data-buy="feed:1">ซื้อ 🪙8</button></div>`)};
+const _pa=petAct;petAct=function(a){if(a=="feed"&&S.feed>0&&S.hun<98){S.feed--;S.hun=Math.min(100,S.hun+55);S.hap=Math.min(100,S.hap+18);S.bond+=4;toast("🍖 "+S.pn+" กินอาหารสัตว์จนอิ่มหนำ!");sfx("ok");upd();return}_pa(a)};
+document.addEventListener("click",e=>{const x=e.target.closest("[data-buy]");if(!x)return;aud();const[k,n]=x.dataset.buy.split(":"),q=+n,c=PR[k]*q;if(S.coins<c)return toast("เงินไม่พอ ต้องใช้ 🪙"+c),sfx("bad");S.coins-=c;if(k=="feed")S.feed+=q;else S.bait[k]+=q;sfx("coin");toast("ซื้อแล้ว −🪙"+c);upd()});
+/* bait in fishing */
+pickF=function(){const prem=S.cprem,w=FS.slice(0,7).map((f,i)=>f[7]*(prem?[.4,.8,.8,2.5,2.5,2.5,2.5][i]:1)*(i>=3?1+.15*(S.up?S.up.f:0):1));w.push(prem?1:4);const T0=w.reduce((a,b)=>a+b,0);let r=Math.random()*T0,i=0;for(;i<7;i++){if(r<w[i])break;r-=w[i]}const q=FS[i];return{i,n:q[0],b:q[1],d:q[2],f:q[3],a:q[4],x:q[5],k:q[6]}};
+const _fg=fishGame;fishGame=function(){_fg();const b=$("#fgo");if(!b)return;b.insertAdjacentHTML("beforebegin",`<div id="bt" class="row" style="justify-content:center;margin:8px 0"></div>`);
+const ub=()=>{$("#bt").innerHTML=[["worm","🪱"],["prem","🦐"]].map(([k,e])=>`<button class="chip ${S.bsel==k?"on":""}" data-bs="${k}">${e} ${S.bait[k]}</button>`).join("");$("#bt").querySelectorAll("[data-bs]").forEach(c=>c.onclick=ev=>{ev.stopPropagation();S.bsel=c.dataset.bs;ub()})};ub();
+const o=b.onclick;b.onclick=function(){if(b.textContent!="ดึง!"){let k=S.bsel;if(S.bait[k]<=0)k=k=="worm"?"prem":"worm";if(S.bait[k]<=0){$("#fm").textContent="ไม่มีเหยื่อแล้ว! ไปซื้อที่ 🏪 ตลาด → ร้านค้า";return sfx("bad")}S.bait[k]--;S.cprem=k=="prem";ub();save()}o.call(b)}};
+/* bedroom */
+function enterHouse(){if(inRoom())return;aud();const f=$("#fd");f.innerHTML="🚪";f.style.opacity=1;f.style.pointerEvents="auto";setTimeout(()=>{showRoom();f.style.opacity=0;f.style.pointerEvents="none"},650)}
+function roomSVG(n){let s=11;const R=()=>(s=s*16807%2147483647)/2147483647;
+const pl=Array.from({length:9},(_,i)=>`<line x1="${i*43.75}" y1="250" x2="${-70+i*61}" y2="400" stroke="#6a4222" stroke-width="1.5" opacity=".55"/>`).join("")+[285,325,370].map(y=>`<line x1="0" y1="${y}" x2="350" y2="${y}" stroke="#6a4222" stroke-width="1" opacity=".25"/>`).join("");
+const cols=["#b5483f","#3f6fa8","#4f8a4a","#d9a441","#7a4a9a","#c9c0a8","#a85a2a"];let bk="";[[78,36],[118,76],[158,116],[198,156]].forEach(([y0],r)=>{if(r>2)return;const y=[98,136,174][r];let x=17;while(x<76){const w=4+R()*5|0,h=22+R()*10|0;bk+=`<rect x="${x}" y="${y-h}" width="${w}" height="${h}" fill="${cols[R()*7|0]}" rx="1"/>`;x+=w+.6}});
+const wp=[1,2,3,4,5].map(i=>`<rect x="${8+(i-1)*70}" y="162" width="62" height="74" fill="none" stroke="#a98456" stroke-width="2" opacity=".7"/>`).join("");
+const sky=n?`<rect x="131" y="46" width="88" height="88" fill="url(#sk)"/><circle cx="190" cy="78" r="13" fill="#f6f0c8"/><circle cx="196" cy="74" r="11" fill="#14204e"/>${[[145,62],[160,98],[205,110],[150,120],[175,60],[210,64]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.6" fill="#fff"/>`).join("")}`:`<rect x="131" y="46" width="88" height="88" fill="url(#sk)"/><circle cx="160" cy="76" r="14" fill="#ffd84a"/><circle cx="160" cy="76" r="20" fill="#ffd84a" opacity=".25"/><ellipse cx="195" cy="100" rx="20" ry="8" fill="#fff" opacity=".95"/><ellipse cx="183" cy="95" rx="11" ry="8" fill="#fff"/><path d="M131 134 Q160 112 190 124 T219 118 V134Z" fill="#6fbd63"/>`;
+return `<svg viewBox="0 0 350 400" width="100%" height="100%" style="position:absolute;inset:0"><defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efd8b2"/><stop offset="1" stop-color="#dcbc8e"/></linearGradient><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a30"/><stop offset=".4" stop-color="#b07a44"/><stop offset="1" stop-color="#9a6a38"/></linearGradient><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1">${n?'<stop offset="0" stop-color="#0b1538"/><stop offset="1" stop-color="#2c3d82"/>':'<stop offset="0" stop-color="#7cc4ff"/><stop offset="1" stop-color="#d4f0ff"/>'}</linearGradient><radialGradient id="gl"><stop offset="0" stop-color="#ffd27a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient><radialGradient id="vg" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></radialGradient></defs>
+<rect width="350" height="250" fill="url(#wg)"/><rect y="150" width="350" height="100" fill="#c9a574" opacity=".55"/>${wp}<rect y="148" width="350" height="5" fill="#8a6234"/>
+<rect y="250" width="350" height="150" fill="url(#fg)"/>${pl}<rect y="242" width="350" height="10" fill="#5e3b1e"/><rect y="252" width="350" height="4" fill="#000" opacity=".25"/>
+${n?"":'<polygon points="140,252 212,252 300,400 90,400" fill="#fff3b0" opacity=".16"/>'}
+<rect x="10" y="40" width="72" height="206" fill="#5e3a1c"/><rect x="14" y="44" width="64" height="198" fill="#3d2511"/>${[100,138,176].map(y=>`<rect x="12" y="${y}" width="68" height="4" fill="#7a4a28"/>`).join("")}${bk}<rect x="20" y="196" width="26" height="32" fill="#d8c6a0" rx="2"/><circle cx="62" cy="212" r="10" fill="#4f8a4a"/>
+<rect x="124" y="40" width="102" height="102" rx="3" fill="#7a4a28"/>${sky}<rect x="173" y="46" width="4" height="88" fill="#7a4a28"/><rect x="131" y="88" width="88" height="4" fill="#7a4a28"/><rect x="118" y="140" width="114" height="8" rx="2" fill="#8a5a30"/>
+<path d="M104 34 H132 V146 Q118 140 104 150Z" fill="#c9505a"/><path d="M246 34 H218 V146 Q232 140 246 150Z" fill="#c9505a"/><path d="M112 40 V140M120 40 V142M240 40 V140M232 40 V142" stroke="#a63a44" stroke-width="2"/><rect x="100" y="28" width="150" height="7" rx="3" fill="#6a4020"/>
+<rect x="262" y="58" width="62" height="50" fill="#d9a82a" rx="2"/><rect x="267" y="63" width="52" height="40" fill="#bfe3ff"/><path d="M267 103 V86 Q282 74 296 88 T319 82 V103Z" fill="#5fae55"/><circle cx="306" cy="73" r="5" fill="#ffd84a"/>
+<ellipse cx="135" cy="268" rx="118" ry="11" fill="#000" opacity=".28"/>
+<rect x="38" y="250" width="14" height="18" fill="#4a2c14"/><rect x="218" y="250" width="14" height="18" fill="#4a2c14"/><rect x="36" y="146" width="198" height="108" rx="16" fill="#6f4326"/><rect x="44" y="154" width="182" height="40" rx="12" fill="#85532e"/>
+<rect x="44" y="188" width="182" height="72" rx="8" fill="#f1e9da"/><rect x="62" y="172" width="66" height="34" rx="14" fill="#fff" stroke="#ddd3c0"/><rect x="134" y="172" width="66" height="34" rx="14" fill="#fff" stroke="#ddd3c0"/>
+<rect x="44" y="210" width="182" height="52" rx="8" fill="#cf4650"/><rect x="44" y="210" width="182" height="14" rx="6" fill="#ea747c"/><path d="M60 236 H210M60 248 H210" stroke="#b3333d" stroke-width="2" opacity=".6"/>
+<rect id="bd" x="36" y="146" width="198" height="120" fill="transparent" style="cursor:pointer"/>
+<rect x="250" y="206" width="70" height="44" rx="3" fill="#7a4a28"/><rect x="254" y="212" width="62" height="14" fill="#8a5a30"/><circle cx="285" cy="219" r="2.5" fill="#e8c860"/><rect x="254" y="232" width="62" height="14" fill="#8a5a30"/><circle cx="285" cy="239" r="2.5" fill="#e8c860"/><rect x="252" y="248" width="6" height="6" fill="#4a2c14"/><rect x="312" y="248" width="6" height="6" fill="#4a2c14"/>
+${n?'<circle cx="270" cy="182" r="55" fill="url(#gl)"/>':""}<rect x="266" y="192" width="8" height="14" fill="#c9a24a"/><path d="M255 192 L262 168 H278 L285 192Z" fill="${n?"#ffe39a":"#e8d4a8"}"/><rect x="292" y="188" width="14" height="18" fill="#c9783a" rx="2"/><path d="M299 188 Q290 170 296 160 Q300 174 302 160 Q312 172 299 188Z" fill="#4f9a45"/>
+<ellipse cx="175" cy="338" rx="112" ry="29" fill="#8a2f3a"/><ellipse cx="175" cy="334" rx="108" ry="27" fill="#b8484f"/><ellipse cx="175" cy="334" rx="86" ry="20" fill="none" stroke="#e8b0a0" stroke-width="2" stroke-dasharray="6 4"/><ellipse cx="175" cy="334" rx="52" ry="11" fill="#c9606a"/>
+<ellipse cx="288" cy="352" rx="22" ry="6" fill="#000" opacity=".28"/>
+<text id="zzz" x="150" y="140" font-size="30" opacity="0">💤</text><rect width="350" height="400" fill="url(#vg)" pointer-events="none"/></svg>`}
+function pxMe(){const k=document.createElement("canvas");k.width=28;k.height=42;const c=k.getContext("2d"),o=cx;cx=c;const px=14,py=40;c.fillStyle="#0003";c.fillRect(px-9,py-2,18,4);spr(PL,{h:"#7a4a26",s:SKC[S.skin],e:"#2a1a10",v:"#6b4a2a",w:"#f1e6cf",p:"#3a3a4a",b:"#4a2a1a"},px-10,py-26,2);if(S.hat==1){c.fillStyle="#e8c46a";c.fillRect(px-13,py-26,26,3);c.fillStyle="#f0d080";c.fillRect(px-8,py-32,16,7)}else if(S.hat==2){c.fillStyle="#d6453d";c.fillRect(px-8,py-30,16,6);c.fillStyle="#a82f28";c.fillRect(px-9,py-25,18,2)}else if(S.hat==3){c.fillStyle="#222";c.fillRect(px-10,py-26,20,3);c.fillRect(px-6,py-38,12,12)}cx=o;return k.toDataURL()}
+function showRoom(){const n=S.t%DL/DL>.7,r=$("#br");r.style.display="flex";
+r.innerHTML=`<div class="rm ${n?"n":""}">${roomSVG(n)}${S.pet?`<div class="it" style="left:50%;top:86%;font-size:34px">${PETS[S.pet].e}</div>`:""}<img src="${pxMe()}" style="position:absolute;left:82%;top:89%;width:20%;transform:translate(-50%,-100%);image-rendering:pixelated"></div><p class="mut" style="color:#e8d4a8;margin:0">🛏️ ห้องนอนของ ${esc(S.name)} ${n?"· ดึกแล้ว ง่วงจัง 🌙":"· ยังเป็นเวลากลางวัน"}</p><div class="row"><button class="btn" id="bsl">🛏️ เข้านอน</button><button class="btn ghost" id="bex">🚪 ออกจากบ้าน</button></div>`;
+const z=()=>{if(S.t%DL/DL<=.7)return toast("☀️ ยังไม่ดึก นอนไม่หลับ รอกลางคืนก่อนนะ");const q=$("#zzz");q.style.opacity=1;q.style.animation="bl 1.2s infinite";sleep();setTimeout(()=>{q.style.opacity=0;q.style.animation="";const R=$("#br .rm");if(R)R.classList.remove("n")},4300)};
+$("#bd").onclick=$("#bsl").onclick=z;
+$("#bex").onclick=()=>{const f=$("#fd");f.innerHTML="🌳";f.style.opacity=1;f.style.pointerEvents="auto";setTimeout(()=>{r.style.display="none";f.style.opacity=0;f.style.pointerEvents="none";hdr()},650)}}
+{const h=OB.find(o=>o.l&&o.l.startsWith("บ้าน"));h.l="บ้าน (เข้าห้องนอน)";h.f=enterHouse}
+const _mv3=mv;mv=function(dt){if(inRoom())return;_mv3(dt)};
+const _act=act;act=function(){if(inRoom())return;_act()};
+/* v5: stat upgrades on level up */
+const UPS=[["g","🌱","ปลูกเร็ว","ต้นไม้ที่มีน้ำโตเร็วขึ้น +10%/แต้ม"],["t","💰","พ่อค้า","ราคาขายสูงขึ้น +4%/แต้ม"],["f","🎣","โชคตกปลา","ปลาหายากมาบ่อยขึ้น +15%/แต้ม"],["p","🐾","ดูแลสัตว์","ความอิ่ม/สุขลดช้าลง 8%/แต้ม"]],UMAX=10;
+const _ens2=ensure;ensure=function(){_ens2();if(!S.up){S.up={g:0,t:0,f:0,p:0};S.sp=lvl()-1;S.lvSeen=lvl()}};
+const _hdr=hdr;hdr=function(){_hdr();if(!S.up)return;const L=lvl();if(L>S.lvSeen){S.sp+=L-S.lvSeen;S.lvSeen=L;sfx("ok");toast("⭐ เลเวลอัพ! Lv."+L+" ได้แต้มอัพสถานะ");setTimeout(()=>{if($("#m").style.display!="flex"&&!inRoom())statUI()},1200)}
+const c=$("#hd .coin");if(c){const w=document.createElement("div");w.style.cssText="display:flex;flex-direction:column;align-items:flex-end;gap:5px";c.replaceWith(w);const b=document.createElement("button");b.dataset.stat="1";b.className="btn "+(S.sp>0?"":"ghost");b.style.cssText="padding:5px 12px;font-size:13px;min-height:0;white-space:nowrap"+(S.sp>0?";animation:pls 1s infinite alternate;background:#e5557a;color:#fff":"");b.textContent="⭐ อัพสถานะ"+(S.sp>0?" ("+S.sp+")":"");w.append(c,b)}};
+document.head.insertAdjacentHTML("beforeend","<style>@keyframes pls{to{transform:scale(1.08)}}</style>");
+document.addEventListener("click",e=>{if(e.target.closest("[data-stat]")&&S.up){aud();statUI()}});
+function statUI(){const h=`<h3>⭐ อัพสถานะ</h3><p class="mut" style="margin:0 0 8px">Lv.${lvl()} · แต้มที่เหลือ <b>${S.sp}</b> (ได้ 1 แต้มทุกเลเวล)</p>${S.sp<1?`<p class="mut" style="margin:0 0 8px;color:#e5a000">🔒 ยังไม่มีแต้ม เก็บ XP ให้เลเวลอัพก่อนนะ</p>`:""}`+UPS.map(([k,e,n,d])=>{const v=S.up[k];return `<div class="row" style="margin-bottom:8px;text-align:left"><span style="font-size:28px">${e}</span><div class="sp"><b>${n}</b> <span class="mut">${v}/${UMAX}</span><br><span class="mut" style="font-size:12px">${d}</span></div><button class="btn g" data-up="${k}" ${S.sp<1||v>=UMAX?"disabled":""} style="min-width:64px">${v>=UMAX?"เต็ม":"＋ อัพ"}</button></div>`}).join("");openM(h)}
+document.addEventListener("click",e=>{const u=e.target.closest("[data-up]");if(u){const k=u.dataset.up;if(S.sp<1||S.up[k]>=UMAX)return;S.sp--;S.up[k]++;sfx("ok");save();hdr();statUI();return}if(S.up&&e.target.closest("#hd")&&$("#m").style.display!="flex")statUI()});
+const _tk=tick;tick=function(){_tk();if(!S.up)return;if(S.up.g)S.plots.forEach(p=>{if(p.u&&p.k&&!p.bug&&p.w>0&&p.p<FR[p.k].grow&&Math.random()<.1*S.up.g)p.p++});if(S.pet&&S.up.p){S.hun=Math.min(100,S.hun+.016*S.up.p);S.hap=Math.min(100,S.hap+.02*S.up.p)}};
+start();
+</script></body></html>
